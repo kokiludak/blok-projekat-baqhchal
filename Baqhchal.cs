@@ -52,7 +52,7 @@ namespace Baqhchal
 
 
         private const int minSheep = 10;
-        private int capturedSheep;
+        public int capturedSheep { private set; get; }
         private int numSheep;
         //private bool sheepTurn;
 
@@ -190,7 +190,7 @@ namespace Baqhchal
         public void unMakeMove(Move move, bool sheepTurn)
         {
             //throw new NotImplementedException();
-
+            boardStates.Remove(board);
             if (sheepTurn)
             {
                 if(numSheep <= minSheep)
