@@ -46,7 +46,7 @@ namespace Baqhchal
 
     public class Baqhchal
     {
-        HashSet<int[,]> boardStates;
+        HashSet<piece[,]> boardStates;
         private int tableSize = 5;
         private piece[,] board;
 
@@ -79,8 +79,6 @@ namespace Baqhchal
 
         }
 
-        
-
         public bool IsMoveLegal(Move move, bool sheepTurn)
         {
             //throw new NotImplementedException();
@@ -92,11 +90,41 @@ namespace Baqhchal
             if(move.starty < 0 || move.starty >= tableSize) return false;
             if (move.endy < 0 || move.endy >= tableSize) return false;
 
-
+            //start square cannot equal end square
+            if ((move.startx == move.endx) && (move.starty == move.endy)) return false;
 
             //cannot move empty pieces, cannot move ontop of other pieces
             if (board[move.startx, move.starty] != piece.Empty) return false;
             if (board[move.endx, move.endy] != piece.Empty) return false;
+
+
+            //moves must be over a line on the grid
+            int dx = Math.Abs(move.endx - move.startx);
+            int dy = Math.Abs(move.endy - move.starty);
+            //any direction
+            if((move.startx + move.starty) % 2 == 0)
+            {
+                //
+                if (move.isMoveCapture())
+                {
+                    if (dx == 0 && dy != 2) return false;
+                    else if (dy == 0 && dx != 2) return false;
+
+                    else if (dx != 2 && dy != 2) return false;
+                }
+                else
+                {
+                    if(dx > 1 || dy > 1) return false;
+                }
+            }
+            else
+            {
+                //orthogonally
+
+                if ((dx == 0) == (dy == 0)) return false;
+            }
+
+
 
             //captures must occur over a sheep
             if (!sheepTurn && move.isMoveCapture())
@@ -104,12 +132,25 @@ namespace Baqhchal
                 if (board[(move.endx - move.startx) / 2, (move.endy - move.starty / 2)] != piece.Sheep) return false;
             }
 
+            //moves cannot reach a state already reached after all sheep have been placed
+            if(numSheep >= minSheep)
+            {
+                MakeMove(move, sheepTurn, true);
+                if (boardStates.Contains(board))
+                {
+                    unMakeMove(move, sheepTurn);
+                    return false;
+                }
+
+                unMakeMove(move, sheepTurn);
+            }
+
 
 
             return true;
         }
 
-        public void MakeMove(Move move, bool sheepTurn)
+        public void MakeMove(Move move, bool sheepTurn, bool isSearchMove = false)
         {
             if (sheepTurn)
             {
@@ -131,6 +172,9 @@ namespace Baqhchal
                     board[move.startx, move.starty] = piece.Empty;
                     board[(move.startx + move.endx) / 2, (move.starty + move.endy) / 2] = piece.Empty;
                     board[move.endx, move.endy] = piece.Tiger;
+
+                    if (!isSearchMove) capturedSheep++;
+
                 }
                 else
                 {
@@ -139,11 +183,40 @@ namespace Baqhchal
                 }
             }
 
+            if (!isSearchMove) boardStates.Add(board);
+
         }
 
         public void unMakeMove(Move move, bool sheepTurn)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+
+            if (sheepTurn)
+            {
+                if(numSheep <= minSheep)
+                {
+                    board[move.startx, move.starty] = piece.Empty;
+                }
+                else
+                {
+                    board[move.startx, move.starty] = piece.Sheep;
+                    board[move.endx, move.endy] = piece.Tiger;
+                }
+            }
+            else
+            {
+                if (move.isMoveCapture())
+                {
+                    board[move.endx, move.endy] = piece.Empty;
+                    board[(move.endx + move.startx) / 2, (move.endy + move.starty) / 2] = piece.Sheep;
+                    board[move.startx, move.starty] = piece.Tiger;
+                }
+                else
+                {
+                    board[move.endx, move.endy] = piece.Empty;
+                    board[move.startx, move.starty] = piece.Tiger;
+                }
+            }
         }
 
         public List<Move> GenerateMoves(bool sheepturn)
@@ -156,13 +229,33 @@ namespace Baqhchal
                 {
                     for(int j = 0; j < tableSize; j++)
                     {
-
+                        for(int dx = -1; dx <= 1; dx++)
+                        {
+                            for(int dy = -1; dy <= 1; dy++)
+                            {
+                                Move m = new Move(i, j, i + dx, j + dy);
+                                if (IsMoveLegal(m, sheepturn)) legalMoves.Add(m);
+                            }
+                        }
                     }
                 }
             }
             else
             {
-
+                for (int i = 0; i < tableSize; i++)
+                {
+                    for (int j = 0; j < tableSize; j++)
+                    {
+                        for (int dx = -2; dx <= 2; dx++)
+                        {
+                            for (int dy = -2; dy <= 2; dy++)
+                            {
+                                Move m = new Move(i, j, i + dx, j + dy);
+                                if (IsMoveLegal(m, sheepturn)) legalMoves.Add(m);
+                            }
+                        }
+                    }
+                }
             }
 
             return legalMoves;
@@ -176,7 +269,6 @@ namespace Baqhchal
 
             return gameState.Active;
         }
-
 
     }
 }
