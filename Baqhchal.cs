@@ -51,9 +51,11 @@ namespace Baqhchal
         public piece[,] board { private set; get; }
 
 
-        private const int minSheep = 10;
+        public const int minSheep = 10;
         public int capturedSheep { private set; get; }
-        private int numSheep;
+        public int numSheep { private set; get; }
+
+        public int MinSheep => minSheep;
         //private bool sheepTurn;
 
         public Baqhchal(int tableSize)
@@ -94,15 +96,18 @@ namespace Baqhchal
             if(move.starty < 0 || move.starty >= tableSize) return false;
             if (move.endy < 0 || move.endy >= tableSize) return false;
 
-            //cannot move empty pieces, cannot move ontop of other pieces
-            if (board[move.startx, move.starty] == piece.Empty) return false;
-            if (board[move.endx, move.endy] != piece.Empty) return false;
+            
 
             //move must be sheep place xd xd
             if (numSheep < minSheep && sheepTurn)
             {
                 return true;
             }
+
+            //cannot move empty pieces, cannot move ontop of other pieces
+            if (board[move.startx, move.starty] == piece.Empty) return false;
+            if (board[move.endx, move.endy] != piece.Empty) return false;
+
 
             //start square cannot equal end square
             if ((move.startx == move.endx) && (move.starty == move.endy)) return false;
@@ -171,6 +176,8 @@ namespace Baqhchal
                 {
                     //place sheep;
                     board[move.startx, move.starty] = piece.Sheep;
+                    numSheep++;
+                    Console.WriteLine("bing chilign");
                 }
                 else
                 {

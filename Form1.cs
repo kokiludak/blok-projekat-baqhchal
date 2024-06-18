@@ -13,7 +13,9 @@ namespace Baqhchal
     public partial class Form1 : Form
     {
         const int tableSize = 5;
-        
+
+
+        bool curSheepTurn;
         Baqhchal tabla;
         Engine protivnik;
 
@@ -34,6 +36,7 @@ namespace Baqhchal
         {
             tabla = new Baqhchal(tableSize);
             protivnik = new Engine(Int32.Parse(textUserDepth.Text), tabla, playerIsSheep.Checked);
+            curSheepTurn = playerIsSheep.Checked;
         }
 
         private void buttonNewGame_Click(object sender, EventArgs e)
@@ -49,6 +52,7 @@ namespace Baqhchal
             Pen black = new Pen(Color.Black);
             Pen red = new Pen(Color.Red);
             SolidBrush tiger = new SolidBrush(Color.FromArgb(212, 173, 2));
+            SolidBrush sheep = new SolidBrush(Color.FromArgb(211, 228, 235));
             for(int i = 0; i < tableSize - 1; i++)
             {
                 for(int j = 0; j < tableSize - 1; j++)
@@ -83,6 +87,10 @@ namespace Baqhchal
 
                         g.FillEllipse(tiger, margina + j * cellSize - cellSize / 4, margina + i * cellSize - cellSize / 4, cellSize / 2, cellSize / 2);
                     }
+                    else if (tabla.board[i, j] == piece.Sheep)
+                    {
+                        g.FillEllipse(sheep, margina + j * cellSize - cellSize / 4, margina + i * cellSize - cellSize / 4, cellSize / 2, cellSize / 2);
+                    }
                 }
             }
 
@@ -107,7 +115,7 @@ namespace Baqhchal
             Console.WriteLine("niggers: " + x + " " + y + " " + xr + " " + yr);
             Console.WriteLine("jiggers: " + (Math.Abs(yr - y) + Math.Abs(xr - x)));
 
-            if(Math.Abs(yr - y) + Math.Abs(xr - x) < 40 && tabla.board[(int)xr, (int)yr] != piece.Empty)
+            if(Math.Abs(yr - y) + Math.Abs(xr - x) < 40 && (tabla.board[(int)xr, (int)yr] != piece.Empty || (curSheepTurn && tabla.numSheep < tabla.MinSheep)))
             {
                 Console.WriteLine("gigger nigger");
                 //kliknuo polje
@@ -124,17 +132,28 @@ namespace Baqhchal
                 x1 = xr;
                 y1 = yr;
                 firstSel = true;
+                if(curSheepTurn && tabla.numSheep < tabla.MinSheep)
+                {
+                    PerformMove(xr, yr);
+                }
             }
             else
             {
-               
-                x2 = xr;
-                y2 = yr;
-                List<Move> allLegalMoves = tabla.GenerateMoves(playerIsSheep.Checked);
-                Move myMove = new Move(x1, y1, x2, y2);
-                if (allLegalMoves.Contains(myMove)) tabla.MakeMove(myMove, playerIsSheep.Checked);
-                firstSel = false;
+                PerformMove(xr, yr);
             }
+        }
+        private void PerformMove(int xr, int yr)
+        {
+            x2 = xr;
+            y2 = yr;
+            List<Move> allLegalMoves = tabla.GenerateMoves(playerIsSheep.Checked);
+            Move myMove = new Move(x1, y1, x2, y2);
+            if (allLegalMoves.Contains(myMove))
+            {
+                Console.WriteLine("gigganigga");
+                tabla.MakeMove(myMove, playerIsSheep.Checked);
+            }
+                firstSel = false;
         }
     }
 }
