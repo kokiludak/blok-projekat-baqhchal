@@ -48,7 +48,7 @@ namespace Baqhchal
     {
         HashSet<piece[,]> boardStates;
         private int tableSize = 5;
-        private piece[,] board;
+        public piece[,] board { private set; get; }
 
 
         private const int minSheep = 10;

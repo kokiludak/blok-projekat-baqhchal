@@ -20,6 +20,11 @@ namespace Baqhchal
         const int margina = 50;
         const int cellSize = 100;
 
+        bool firstSel = false;
+        int x1, y1;
+        int x2, y2;
+
+
         public Form1()
         {
             InitializeComponent();
@@ -42,6 +47,7 @@ namespace Baqhchal
             //
             Graphics g = e.Graphics;
             Pen black = new Pen(Color.Black);
+            Pen red = new Pen(Color.Red);
             for(int i = 0; i < tableSize - 1; i++)
             {
                 for(int j = 0; j < tableSize - 1; j++)
@@ -61,20 +67,51 @@ namespace Baqhchal
                     }
                 }
             }
+
+
+            //draw Selection
+            if (firstSel)
+            {
+                int xx = margina + (x1 * cellSize);
+                int xy = margina + (y1 * cellSize);
+
+                g.DrawRectangle(red, xx - cellSize / 2, xy - cellSize / 2, cellSize, cellSize);
+            }
+
         }
 
         private void Form1_MouseDown(object sender, MouseEventArgs e)
         {
-            double x = (double)(e.X - 50) / cellSize;
-            double y = (double)(e.Y - 50) / cellSize;
+            double x = (double)(e.X - margina) / cellSize;
+            double y = (double)(e.Y - margina) / cellSize;
             double xr = Math.Round(x);
             double yr = Math.Round(y);
-            if(Math.Abs(yr - y) + Math.Abs(xr - x) < 20)
+            if(Math.Abs(yr - y) + Math.Abs(xr - x) < 20 && tabla.board[(int)xr, (int)yr] != piece.Empty)
             {
-
+                //kliknuo polje
+                PointSelected((int)xr, (int)yr);
             }
 
-            //int 
+            Invalidate();
+        }
+
+        private void PointSelected(int xr, int yr)
+        {
+            if (!firstSel)
+            {
+                x1 = xr;
+                y1 = yr;
+                firstSel = true;
+            }
+            else
+            {
+                firstSel = false;
+                x2 = xr;
+                y2 = yr;
+                List<Move> allLegalMoves = tabla.GenerateMoves(playerIsSheep.Checked);
+                Move myMove = new Move(x1, y1, x2, y2);
+                if (allLegalMoves.Contains(myMove)) tabla.MakeMove(myMove, playerIsSheep.Checked);
+            }
         }
     }
 }
