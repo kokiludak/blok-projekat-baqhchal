@@ -109,13 +109,28 @@ namespace Baqhchal
 
         }
 
+        public Baqhchal(Baqhchal copy)
+        {
+            tableSize = copy.tableSize;
+            boardStates = new HashSet<piece[,]>();
+            board = new piece[tableSize, tableSize];
+
+            foreach(piece[,] board in boardStates)
+            {
+                boardStates.Add(board);
+            }
+            for(int i = 0; i < tableSize; i++)
+            {
+                for(int j = 0; j < tableSize; j++)
+                {
+                    board[i, j] = copy.board[i, j];
+                }
+            }
+        }
+
         public bool IsMoveLegal(Move move, bool sheepTurn)
         {
             //throw new NotImplementedException();
-
-
-            
-            
 
             //moves must be in bounds
             if (move.startx < 0 || move.startx >= tableSize) return false;
@@ -182,14 +197,14 @@ namespace Baqhchal
             //moves cannot reach a state already reached after all sheep have been placed
             if(numSheep >= minSheep)
             {
-                MakeMove(move, sheepTurn, true);
-                if (boardStates.Contains(board))
+
+                //ovo je uzasna implementacija. Moram da popravim unmakemove i makemove
+                Baqhchal b = new Baqhchal(this);
+                b.MakeMove(move, sheepTurn, true);
+                if (boardStates.Contains(b.board))
                 {
-                    unMakeMove(move, sheepTurn);
                     return false;
                 }
-
-                unMakeMove(move, sheepTurn);
             }
 
 
