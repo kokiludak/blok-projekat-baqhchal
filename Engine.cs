@@ -8,6 +8,11 @@ using System.Windows.Forms;
 namespace Baqhchal
 {
     //TODO
+    /*
+     * 
+     * 
+     * 
+     */
     //
     public class Engine
     {
@@ -27,7 +32,7 @@ namespace Baqhchal
         }
 
 
-        public Move GenerateBestMove(bool sheepTurn)
+        public Move GenerateBestMove()
         {
             foundMove = false;
             bestEval = Search(depth, sheep);
