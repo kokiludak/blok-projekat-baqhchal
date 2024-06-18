@@ -199,6 +199,7 @@ namespace Baqhchal
 
         public void MakeMove(Move move, bool sheepTurn, bool isSearchMove = false)
         {
+            Console.WriteLine("made move: " + move);
             if (sheepTurn)
             {
                 if(numSheep < minSheep)
@@ -239,17 +240,19 @@ namespace Baqhchal
         public void unMakeMove(Move move, bool sheepTurn)
         {
             //throw new NotImplementedException();
+            Console.WriteLine("unmade move: " + move);
             boardStates.Remove(board);
             if (sheepTurn)
             {
                 if(numSheep <= minSheep)
                 {
                     board[move.startx, move.starty] = piece.Empty;
+                    numSheep--;
                 }
                 else
                 {
                     board[move.startx, move.starty] = piece.Sheep;
-                    board[move.endx, move.endy] = piece.Tiger;
+                    board[move.endx, move.endy] = piece.Empty;
                 }
             }
             else
@@ -319,5 +322,27 @@ namespace Baqhchal
             return gameState.Active;
         }
 
+
+        public override bool Equals(object obj)
+        {
+            if(obj == null) return false;
+            if(!(obj is Baqhchal)) return false;
+
+            Baqhchal other = obj as Baqhchal;
+            if(other == null) return false;
+            return Equals(other);
+        }
+        public bool Equals(Baqhchal other)
+        {
+            if(tableSize != other.tableSize) return false;
+            for(int i = 0; i < tableSize; i++)
+            {
+                for(int j = 0; j < tableSize; j++)
+                {
+                    if (board[i, j] != other.board[i, j]) return false;
+                }
+            }
+            return true;
+        }
     }
 }

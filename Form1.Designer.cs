@@ -32,6 +32,7 @@
             this.buttonNewGame = new System.Windows.Forms.Button();
             this.textUserDepth = new System.Windows.Forms.TextBox();
             this.labelFirstSel = new System.Windows.Forms.Label();
+            this.buttonUndo = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // playerIsSheep
@@ -73,11 +74,22 @@
             this.labelFirstSel.TabIndex = 3;
             this.labelFirstSel.UseMnemonic = false;
             // 
+            // buttonUndo
+            // 
+            this.buttonUndo.Location = new System.Drawing.Point(692, 225);
+            this.buttonUndo.Name = "buttonUndo";
+            this.buttonUndo.Size = new System.Drawing.Size(75, 23);
+            this.buttonUndo.TabIndex = 4;
+            this.buttonUndo.Text = "Undo";
+            this.buttonUndo.UseVisualStyleBackColor = true;
+            this.buttonUndo.Click += new System.EventHandler(this.buttonUndo_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 561);
+            this.Controls.Add(this.buttonUndo);
             this.Controls.Add(this.labelFirstSel);
             this.Controls.Add(this.textUserDepth);
             this.Controls.Add(this.buttonNewGame);
@@ -100,6 +112,7 @@
         private System.Windows.Forms.Button buttonNewGame;
         private System.Windows.Forms.TextBox textUserDepth;
         private System.Windows.Forms.Label labelFirstSel;
+        private System.Windows.Forms.Button buttonUndo;
     }
 }
 

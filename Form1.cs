@@ -104,7 +104,7 @@ namespace Baqhchal
                 int xx = margina + (x1 * cellSize);
                 int xy = margina + (y1 * cellSize);
 
-                g.DrawRectangle(red, xx - cellSize / 2, xy - cellSize / 2, cellSize, cellSize);
+                g.DrawRectangle(red, xy - cellSize / 2, xx - cellSize / 2, cellSize, cellSize);
             }
 
         }
@@ -140,6 +140,12 @@ namespace Baqhchal
             Invalidate();
         }
 
+        private void buttonUndo_Click(object sender, EventArgs e)
+        {
+            tabla.unMakeMove(new Move(x1, y1, x2, y2), curSheepTurn);
+            Invalidate();
+        }
+
         private void PointSelected(int xr, int yr)
         {
             if (!firstSel)
@@ -164,7 +170,7 @@ namespace Baqhchal
             x2 = xr;
             y2 = yr;
             List<Move> allLegalMoves = tabla.GenerateMoves(playerIsSheep.Checked);
-            foreach(Move m in allLegalMoves) Console.WriteLine(m);
+            //foreach(Move m in allLegalMoves) Console.WriteLine(m);
 
 
             Move myMove = new Move(x1, y1, x2, y2);
