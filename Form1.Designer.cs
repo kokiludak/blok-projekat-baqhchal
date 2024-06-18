@@ -31,6 +31,7 @@
             this.playerIsSheep = new System.Windows.Forms.CheckBox();
             this.buttonNewGame = new System.Windows.Forms.Button();
             this.textUserDepth = new System.Windows.Forms.TextBox();
+            this.labelFirstSel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // playerIsSheep
@@ -63,11 +64,21 @@
             this.textUserDepth.TabIndex = 2;
             this.textUserDepth.Text = "5";
             // 
+            // labelFirstSel
+            // 
+            this.labelFirstSel.AutoSize = true;
+            this.labelFirstSel.Location = new System.Drawing.Point(692, 208);
+            this.labelFirstSel.Name = "labelFirstSel";
+            this.labelFirstSel.Size = new System.Drawing.Size(0, 13);
+            this.labelFirstSel.TabIndex = 3;
+            this.labelFirstSel.UseMnemonic = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 561);
+            this.Controls.Add(this.labelFirstSel);
             this.Controls.Add(this.textUserDepth);
             this.Controls.Add(this.buttonNewGame);
             this.Controls.Add(this.playerIsSheep);
@@ -88,6 +99,7 @@
         private System.Windows.Forms.CheckBox playerIsSheep;
         private System.Windows.Forms.Button buttonNewGame;
         private System.Windows.Forms.TextBox textUserDepth;
+        private System.Windows.Forms.Label labelFirstSel;
     }
 }
 

@@ -44,18 +44,21 @@ namespace Baqhchal
             tabla = new Baqhchal(tableSize);
             protivnik = new Engine(Int32.Parse(textUserDepth.Text), tabla, playerIsSheep.Checked);
             curSheepTurn = playerIsSheep.Checked;
+            firstSel = false;
+
             Invalidate();
         }
 
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
-            // margine 50px
-            //
             Graphics g = e.Graphics;
             Pen black = new Pen(Color.Black);
             Pen red = new Pen(Color.Red);
             SolidBrush tiger = new SolidBrush(Color.FromArgb(212, 173, 2));
             SolidBrush sheep = new SolidBrush(Color.FromArgb(211, 228, 235));
+
+            labelFirstSel.Text = firstSel.ToString();
+
             for(int i = 0; i < tableSize - 1; i++)
             {
                 for(int j = 0; j < tableSize - 1; j++)
@@ -86,8 +89,6 @@ namespace Baqhchal
                 {
                     if (tabla.board[i, j] == piece.Tiger)
                     {
-                        //g.FillCircle(tiger, margina + j * cellSize - cellSize / 2, margina + i * cellSize - cellSize / 2, cellSize, cellSize);
-
                         g.FillEllipse(tiger, margina + j * cellSize - cellSize / 4, margina + i * cellSize - cellSize / 4, cellSize / 2, cellSize / 2);
                     }
                     else if (tabla.board[i, j] == piece.Sheep)
@@ -116,11 +117,24 @@ namespace Baqhchal
             double yr = Math.Round(y);
 
             Console.WriteLine("points: " + x + " " + y + " " + xr + " " + yr);
-            //Console.WriteLine("jiggers: " + (Math.Abs(yr - y) + Math.Abs(xr - x)));
 
-            if(Math.Abs(yr - y) + Math.Abs(xr - x) < 0.5f && (tabla.board[(int)xr, (int)yr] != piece.Empty || (curSheepTurn && tabla.numSheep < tabla.MinSheep)))
+            if(Math.Abs(yr - y) + Math.Abs(xr - x) < 0.5f)
             {
-                PointSelected((int)xr, (int)yr);
+                if (firstSel)
+                {
+                    if(tabla.board[(int)xr, (int)yr] == piece.Empty) PointSelected((int)xr, (int)yr);
+                }
+                else
+                {
+                    if (curSheepTurn && tabla.numSheep < tabla.MinSheep && tabla.board[(int)xr, (int)yr] == piece.Empty)
+                    {
+                      PointSelected((int)xr, (int)yr);
+                    }
+                    else
+                    {
+                        if (tabla.board[(int)xr, (int)yr] != piece.Empty) PointSelected((int)xr, (int)yr);
+                    }
+                }
             }
 
             Invalidate();
@@ -158,12 +172,12 @@ namespace Baqhchal
 
             if (allLegalMoves.Contains(myMove))
             {
-                Console.WriteLine("selected move exists " + tabla.board[myMove.startx, myMove.starty]);
+                Console.WriteLine("selected move is legal, piece type: " + tabla.board[myMove.startx, myMove.starty]);
                 tabla.MakeMove(myMove, playerIsSheep.Checked);
             }
             else
             {
-                Console.WriteLine("ne postoji trazeni potez");
+                Console.WriteLine("selected move is not legal");
             }
             firstSel = false;
         }
