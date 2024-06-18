@@ -36,6 +36,8 @@
             // playerIsSheep
             // 
             this.playerIsSheep.AutoSize = true;
+            this.playerIsSheep.Checked = true;
+            this.playerIsSheep.CheckState = System.Windows.Forms.CheckState.Checked;
             this.playerIsSheep.Location = new System.Drawing.Point(692, 38);
             this.playerIsSheep.Name = "playerIsSheep";
             this.playerIsSheep.Size = new System.Drawing.Size(80, 17);

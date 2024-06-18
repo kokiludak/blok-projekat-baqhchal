@@ -55,13 +55,10 @@ namespace Baqhchal
                 {
                     g.DrawRectangle(black, new Rectangle(margina + j * cellSize, margina + i * cellSize, cellSize, cellSize));
 
-                    if (tabla.board[i, j] == piece.Tiger)
-                    {
-                        g.FillRectangle(tiger, margina + j * cellSize - cellSize / 2, margina + i * cellSize - cellSize / 2, cellSize, cellSize);
-                    }
+                   
 
                     //dijagonala
-                    if((i + j) % 2 == 0)
+                    if ((i + j) % 2 == 0)
                     {
                         //gore levo > dole desno
                         g.DrawLine(black, new Point(margina + (j * cellSize), margina + (i * cellSize)), new Point(margina + ((j + 1) * cellSize), margina + ((i + 1) * cellSize)));
@@ -74,6 +71,20 @@ namespace Baqhchal
                 }
             }
 
+
+            //draw on points
+            for(int i = 0; i < tableSize; i++)
+            {
+                for(int j = 0; j < tableSize; j++)
+                {
+                    if (tabla.board[i, j] == piece.Tiger)
+                    {
+                        //g.FillCircle(tiger, margina + j * cellSize - cellSize / 2, margina + i * cellSize - cellSize / 2, cellSize, cellSize);
+
+                        g.FillEllipse(tiger, margina + j * cellSize - cellSize / 4, margina + i * cellSize - cellSize / 4, cellSize / 2, cellSize / 2);
+                    }
+                }
+            }
 
             //draw Selection
             if (firstSel)

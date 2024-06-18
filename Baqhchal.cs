@@ -83,6 +83,10 @@ namespace Baqhchal
         {
             //throw new NotImplementedException();
 
+
+            
+            
+
             //moves must be in bounds
             if (move.startx < 0 || move.startx >= tableSize) return false;
             if (move.endx < 0 || move.endx >= tableSize) return false;
@@ -90,12 +94,18 @@ namespace Baqhchal
             if(move.starty < 0 || move.starty >= tableSize) return false;
             if (move.endy < 0 || move.endy >= tableSize) return false;
 
-            //start square cannot equal end square
-            if ((move.startx == move.endx) && (move.starty == move.endy)) return false;
-
             //cannot move empty pieces, cannot move ontop of other pieces
             if (board[move.startx, move.starty] == piece.Empty) return false;
             if (board[move.endx, move.endy] != piece.Empty) return false;
+
+            //move must be sheep place xd xd
+            if (numSheep < minSheep && sheepTurn)
+            {
+                return true;
+            }
+
+            //start square cannot equal end square
+            if ((move.startx == move.endx) && (move.starty == move.endy)) return false;
 
 
             //moves must be over a line on the grid
@@ -131,6 +141,9 @@ namespace Baqhchal
             {
                 if (board[(move.endx + move.startx) / 2, (move.endy + move.starty / 2)] != piece.Sheep) return false;
             }
+            else if (sheepTurn && move.isMoveCapture()) return false;
+
+
 
             //moves cannot reach a state already reached after all sheep have been placed
             if(numSheep >= minSheep)
