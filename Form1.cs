@@ -41,7 +41,10 @@ namespace Baqhchal
 
         private void buttonNewGame_Click(object sender, EventArgs e)
         {
-            Form1_Load(sender, e);
+            tabla = new Baqhchal(tableSize);
+            protivnik = new Engine(Int32.Parse(textUserDepth.Text), tabla, playerIsSheep.Checked);
+            curSheepTurn = playerIsSheep.Checked;
+            Invalidate();
         }
 
         private void Form1_Paint(object sender, PaintEventArgs e)
@@ -112,13 +115,11 @@ namespace Baqhchal
             double xr = Math.Round(x);
             double yr = Math.Round(y);
 
-            Console.WriteLine("niggers: " + x + " " + y + " " + xr + " " + yr);
-            Console.WriteLine("jiggers: " + (Math.Abs(yr - y) + Math.Abs(xr - x)));
+            Console.WriteLine("points: " + x + " " + y + " " + xr + " " + yr);
+            //Console.WriteLine("jiggers: " + (Math.Abs(yr - y) + Math.Abs(xr - x)));
 
-            if(Math.Abs(yr - y) + Math.Abs(xr - x) < 40 && (tabla.board[(int)xr, (int)yr] != piece.Empty || (curSheepTurn && tabla.numSheep < tabla.MinSheep)))
+            if(Math.Abs(yr - y) + Math.Abs(xr - x) < 0.5f && (tabla.board[(int)xr, (int)yr] != piece.Empty || (curSheepTurn && tabla.numSheep < tabla.MinSheep)))
             {
-                Console.WriteLine("gigger nigger");
-                //kliknuo polje
                 PointSelected((int)xr, (int)yr);
             }
 
@@ -134,11 +135,13 @@ namespace Baqhchal
                 firstSel = true;
                 if(curSheepTurn && tabla.numSheep < tabla.MinSheep)
                 {
+                    Console.WriteLine("point selected: place sheep");
                     PerformMove(xr, yr);
                 }
             }
             else
             {
+                Console.WriteLine("point selected: movement");
                 PerformMove(xr, yr);
             }
         }
@@ -147,13 +150,22 @@ namespace Baqhchal
             x2 = xr;
             y2 = yr;
             List<Move> allLegalMoves = tabla.GenerateMoves(playerIsSheep.Checked);
+            foreach(Move m in allLegalMoves) Console.WriteLine(m);
+
+
             Move myMove = new Move(x1, y1, x2, y2);
+            Console.WriteLine("izabrani: " + myMove);
+
             if (allLegalMoves.Contains(myMove))
             {
-                Console.WriteLine("gigganigga");
+                Console.WriteLine("selected move exists " + tabla.board[myMove.startx, myMove.starty]);
                 tabla.MakeMove(myMove, playerIsSheep.Checked);
             }
-                firstSel = false;
+            else
+            {
+                Console.WriteLine("ne postoji trazeni potez");
+            }
+            firstSel = false;
         }
     }
 }

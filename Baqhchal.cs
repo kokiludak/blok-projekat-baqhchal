@@ -34,6 +34,33 @@ namespace Baqhchal
             this.starty = starty;
             this.endx = endx;
             this.endy = endy;
+
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null) return false;
+
+            if (!(obj is Move)) return false;
+
+            Move other = obj as Move;
+            return Equals(other);
+        }
+
+        public bool Equals(Move other)
+        {
+            if (other == null) return false;
+            if (startx != other.startx) return false;
+            if (starty != other.starty) return false;
+            if (endx != other.endx) return false;
+            if (endy != other.endy) return false;
+
+            return true;
+
+        }
+        public override string ToString()
+        {
+            return startx.ToString() + " " + starty.ToString() + " " + endx.ToString() + " " + endy.ToString();
         }
 
         public bool isMoveCapture()
@@ -62,6 +89,7 @@ namespace Baqhchal
         {
             this.tableSize = tableSize;
             board = new piece[tableSize, tableSize];
+            boardStates = new HashSet<piece[,]>();
             numSheep = 0;
             //sheepTurn = true;
 
@@ -98,10 +126,11 @@ namespace Baqhchal
 
             
 
-            //move must be sheep place xd xd
+            //if move is sheep place, must be over empty point
             if (numSheep < minSheep && sheepTurn)
             {
-                return true;
+                //Console.WriteLine("sheep placement logic entered");
+                return board[move.startx, move.starty] == piece.Empty;
             }
 
             //cannot move empty pieces, cannot move ontop of other pieces
@@ -177,7 +206,7 @@ namespace Baqhchal
                     //place sheep;
                     board[move.startx, move.starty] = piece.Sheep;
                     numSheep++;
-                    Console.WriteLine("bing chilign");
+                    Console.WriteLine("place sheep");
                 }
                 else
                 {
