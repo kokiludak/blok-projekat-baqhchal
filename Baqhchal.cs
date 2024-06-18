@@ -94,7 +94,7 @@ namespace Baqhchal
             if ((move.startx == move.endx) && (move.starty == move.endy)) return false;
 
             //cannot move empty pieces, cannot move ontop of other pieces
-            if (board[move.startx, move.starty] == piece.Empty) return false;
+            if (board[move.startx, move.starty] != piece.Empty) return false;
             if (board[move.endx, move.endy] != piece.Empty) return false;
 
 
@@ -129,7 +129,7 @@ namespace Baqhchal
             //captures must occur over a sheep
             if (!sheepTurn && move.isMoveCapture())
             {
-                if (board[(move.endx + move.startx) / 2, (move.endy + move.starty / 2)] != piece.Sheep) return false;
+                if (board[(move.endx - move.startx) / 2, (move.endy - move.starty / 2)] != piece.Sheep) return false;
             }
 
             //moves cannot reach a state already reached after all sheep have been placed
@@ -263,7 +263,7 @@ namespace Baqhchal
 
         public gameState GameState()
         {
-            if (capturedSheep >= 5) return gameState.TigerWon;
+            if (capturedSheep > 5) return gameState.TigerWon;
 
             if (GenerateMoves(false).Count == 0) return gameState.SheepWon;
 
