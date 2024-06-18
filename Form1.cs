@@ -17,7 +17,7 @@ namespace Baqhchal
 
         bool curSheepTurn;
         Baqhchal tabla;
-        Engine protivnik;
+        Engine opponent;
 
         const int margina = 50;
         const int cellSize = 100;
@@ -35,14 +35,14 @@ namespace Baqhchal
         private void Form1_Load(object sender, EventArgs e)
         {
             tabla = new Baqhchal(tableSize);
-            protivnik = new Engine(Int32.Parse(textUserDepth.Text), tabla, playerIsSheep.Checked);
+            opponent = new Engine(Int32.Parse(textUserDepth.Text), tabla, playerIsSheep.Checked);
             curSheepTurn = playerIsSheep.Checked;
         }
 
         private void buttonNewGame_Click(object sender, EventArgs e)
         {
             tabla = new Baqhchal(tableSize);
-            protivnik = new Engine(Int32.Parse(textUserDepth.Text), tabla, playerIsSheep.Checked);
+            opponent = new Engine(Int32.Parse(textUserDepth.Text), tabla, playerIsSheep.Checked);
             curSheepTurn = playerIsSheep.Checked;
             firstSel = false;
 
@@ -186,6 +186,14 @@ namespace Baqhchal
                 Console.WriteLine("selected move is not legal");
             }
             firstSel = false;
+
+            //curSheepTurn = !curSheepTurn;
+            //EngineMove();
+        }
+
+        public void EngineMove()
+        {
+            tabla.MakeMove(opponent.GenerateBestMove(), curSheepTurn);
         }
     }
 }

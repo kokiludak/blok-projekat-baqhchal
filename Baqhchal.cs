@@ -75,6 +75,7 @@ namespace Baqhchal
     {
         HashSet<piece[,]> boardStates;
         private int tableSize = 5;
+        Stack<Move> moveHistory;
         public piece[,] board { private set; get; }
 
 
@@ -90,6 +91,7 @@ namespace Baqhchal
             this.tableSize = tableSize;
             board = new piece[tableSize, tableSize];
             boardStates = new HashSet<piece[,]>();
+            moveHistory = new Stack<Move>();
             numSheep = 0;
             //sheepTurn = true;
 
@@ -114,6 +116,7 @@ namespace Baqhchal
             tableSize = copy.tableSize;
             boardStates = new HashSet<piece[,]>();
             board = new piece[tableSize, tableSize];
+            moveHistory = new Stack<Move>();
 
             foreach(piece[,] board in boardStates)
             {
@@ -126,6 +129,14 @@ namespace Baqhchal
                     board[i, j] = copy.board[i, j];
                 }
             }
+
+            //imam kancer za ovo
+            Stack<Move> temp = new Stack<Move>();
+            foreach(Move m in copy.moveHistory)
+            {
+                temp.Push(m);
+            }
+            foreach(Move m in temp) moveHistory.Push(m);
         }
 
         public bool IsMoveLegal(Move move, bool sheepTurn)
@@ -188,7 +199,7 @@ namespace Baqhchal
             //captures must occur over a sheep
             if (!sheepTurn && move.isMoveCapture())
             {
-                if (board[(move.endx + move.startx) / 2, (move.endy + move.starty / 2)] != piece.Sheep) return false;
+                if (board[(move.endx + move.startx) / 2, (move.endy + move.starty) / 2] != piece.Sheep) return false;
             }
             else if (sheepTurn && move.isMoveCapture()) return false;
 
@@ -266,6 +277,7 @@ namespace Baqhchal
                 }
                 else
                 {
+                    Console.WriteLine("you have cancer dog !");
                     board[move.startx, move.starty] = piece.Sheep;
                     board[move.endx, move.endy] = piece.Empty;
                 }
