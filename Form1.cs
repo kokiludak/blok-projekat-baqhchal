@@ -35,14 +35,14 @@ namespace Baqhchal
         private void Form1_Load(object sender, EventArgs e)
         {
             tabla = new Baqhchal(tableSize);
-            opponent = new Engine(Int32.Parse(textUserDepth.Text), tabla, playerIsSheep.Checked);
+            opponent = new Engine(Int32.Parse(textUserDepth.Text), tabla, !playerIsSheep.Checked);
             curSheepTurn = playerIsSheep.Checked;
         }
 
         private void buttonNewGame_Click(object sender, EventArgs e)
         {
             tabla = new Baqhchal(tableSize);
-            opponent = new Engine(Int32.Parse(textUserDepth.Text), tabla, playerIsSheep.Checked);
+            opponent = new Engine(Int32.Parse(textUserDepth.Text), tabla, !playerIsSheep.Checked);
             curSheepTurn = playerIsSheep.Checked;
             firstSel = false;
 
@@ -143,7 +143,7 @@ namespace Baqhchal
         private void buttonUndo_Click(object sender, EventArgs e)
         {
             //tabla.unMakeMove(new Move(x1, y1, x2, y2), curSheepTurn);
-            tabla.undoMove(curSheepTurn);
+            tabla.undoMove();
             Invalidate();
         }
 
@@ -174,7 +174,7 @@ namespace Baqhchal
             //foreach(Move m in allLegalMoves) Console.WriteLine(m);
 
 
-            Move myMove = new Move(x1, y1, x2, y2);
+            Move myMove = new Move(x1, y1, x2, y2, curSheepTurn);
             Console.WriteLine("izabrani: " + myMove);
 
             if (allLegalMoves.Contains(myMove))
@@ -188,13 +188,16 @@ namespace Baqhchal
             }
             firstSel = false;
 
-            //curSheepTurn = !curSheepTurn;
-            //EngineMove();
+            Invalidate();
+
+            curSheepTurn = !curSheepTurn;
+            EngineMove();
         }
 
         public void EngineMove()
         {
-            tabla.MakeMove(opponent.GenerateBestMove(), curSheepTurn);
+            tabla.MakeMove(opponent.GenerateBestMove());
+            curSheepTurn = !curSheepTurn;
         }
     }
 }

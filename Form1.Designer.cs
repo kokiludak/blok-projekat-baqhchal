@@ -63,7 +63,7 @@
             this.textUserDepth.Name = "textUserDepth";
             this.textUserDepth.Size = new System.Drawing.Size(100, 20);
             this.textUserDepth.TabIndex = 2;
-            this.textUserDepth.Text = "5";
+            this.textUserDepth.Text = "4";
             // 
             // labelFirstSel
             // 

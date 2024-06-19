@@ -48,7 +48,7 @@ namespace Baqhchal
         {
             if(baqhchal.GameState() != gameState.Active || depth_remaining == 0)
             {
-                return Eval(sheepTurn);
+                return Eval();
             }
 
             if (sheepTurn)
@@ -57,9 +57,9 @@ namespace Baqhchal
 
                 foreach (Move move in baqhchal.GenerateMoves(sheepTurn))
                 {
-                    baqhchal.MakeMove(move, sheepTurn);
+                    baqhchal.MakeMove(move);
                     int value = Search(depth_remaining - 1, !sheepTurn, depth + 1, alpha, beta);
-                    baqhchal.undoMove(sheepTurn);
+                    baqhchal.undoMove();
 
                     if(value > curBestEval && depth == 0)
                     {
@@ -83,10 +83,15 @@ namespace Baqhchal
 
                 foreach(Move move in baqhchal.GenerateMoves(sheepTurn))
                 {
-                    baqhchal.MakeMove(move, sheepTurn);
+                    baqhchal.MakeMove(move);
                     int value = Search(depth_remaining - 1, !sheepTurn, depth + 1, alpha, beta);
-                    baqhchal.undoMove(sheepTurn);
+                    baqhchal.undoMove();
 
+
+                    if (value < curBestEval && depth == 0)
+                    {
+                        bestMove = move;
+                    }
 
                     curBestEval = Math.Min(curBestEval, value);
                     beta = Math.Min(beta, curBestEval);
@@ -103,17 +108,17 @@ namespace Baqhchal
         }
 
 
-        public int Eval(bool sheepTurn)
+        public int Eval()
         {
-            int winvl;
-            if (sheepTurn) winvl = Int32.MaxValue;
-            else winvl = Int32.MinValue;
+            int winvl = Int32.MaxValue;
+            //if (sheep) winvl = Int32.MaxValue;
+            //else winvl = Int32.MinValue;
             if (baqhchal.GameState() == gameState.SheepWon) return winvl;
             if (baqhchal.GameState() == gameState.TigerWon) return -winvl;
 
             
 
-            return sheepTurn ? -baqhchal.capturedSheep : baqhchal.capturedSheep;
+            return false ? -baqhchal.capturedSheep : baqhchal.capturedSheep;
         }
 
     }

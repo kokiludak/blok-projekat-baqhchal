@@ -27,14 +27,14 @@ namespace Baqhchal
     public class Move { 
         public int startx, starty;
         public int endx, endy;
-
-        public Move(int startx, int starty, int endx, int endy)
+        public bool sheepMove { private set; get; }
+        public Move(int startx, int starty, int endx, int endy, bool sheepMove)
         {
             this.startx = startx;
             this.starty = starty;
             this.endx = endx;
             this.endy = endy;
-
+            this.sheepMove = sheepMove;
         }
 
         public override bool Equals(object obj)
@@ -54,13 +54,13 @@ namespace Baqhchal
             if (starty != other.starty) return false;
             if (endx != other.endx) return false;
             if (endy != other.endy) return false;
-
+            if (sheepMove != other.sheepMove) return false; 
             return true;
 
         }
         public override string ToString()
         {
-            return startx.ToString() + " " + starty.ToString() + " " + endx.ToString() + " " + endy.ToString();
+            return startx.ToString() + " " + starty.ToString() + " " + endx.ToString() + " " + endy.ToString() + " " + sheepMove.ToString();
         }
 
         public bool isMoveCapture()
@@ -139,9 +139,11 @@ namespace Baqhchal
             foreach(Move m in temp) moveHistory.Push(m);
         }
 
-        public bool IsMoveLegal(Move move, bool sheepTurn)
+        public bool IsMoveLegal(Move move)
         {
             //throw new NotImplementedException();
+
+            bool sheepTurn = move.sheepMove;
 
             //moves must be in bounds
             if (move.startx < 0 || move.startx >= tableSize) return false;
@@ -166,6 +168,14 @@ namespace Baqhchal
 
             //start square cannot equal end square
             if ((move.startx == move.endx) && (move.starty == move.endy)) return false;
+
+
+            //player must move its own pieces
+            if (sheepTurn)
+            {
+                if (board[move.startx, move.starty] != piece.Sheep) return false;
+            }
+            else if (board[move.startx, move.starty] != piece.Tiger) return false;
 
 
             //moves must be over a line on the grid
@@ -211,7 +221,7 @@ namespace Baqhchal
 
                 //ovo je uzasna implementacija. Moram da popravim unmakemove i makemove
                 Baqhchal b = new Baqhchal(this);
-                b.MakeMove(move, sheepTurn, true);
+                b.MakeMove(move, true);
                 if (boardStates.Contains(b.board))
                 {
                     return false;
@@ -223,9 +233,10 @@ namespace Baqhchal
             return true;
         }
 
-        public void MakeMove(Move move, bool sheepTurn, bool isSearchMove = false)
+        public void MakeMove(Move move, bool isSearchMove = false)
         {
-            Console.WriteLine("made move: " + move);
+            bool sheepTurn = move.sheepMove;
+            //Console.WriteLine("made move: " + move);
             if (sheepTurn)
             {
                 if (numSheep < minSheep)
@@ -233,7 +244,6 @@ namespace Baqhchal
                     //place sheep;
                     board[move.startx, move.starty] = piece.Sheep;
                     numSheep++;
-                    Console.WriteLine("place sheep");
                 }
                 else
                 {
@@ -303,11 +313,14 @@ namespace Baqhchal
             }
         }
 
-        public void undoMove(bool sheepTurn)
+        public void undoMove()
         {
             if (moveHistory.Count == 0) return;
 
+
             Move lastMove = moveHistory.Pop();
+            Console.WriteLine("undoing move: " + lastMove);
+            bool sheepTurn = lastMove.sheepMove;
             if (sheepTurn)
             {
                 if(lastMove.startx == lastMove.endx && lastMove.starty == lastMove.endy)
@@ -332,6 +345,7 @@ namespace Baqhchal
                 }
                 else
                 {
+                    Console.WriteLine("xd tiger undo");
                     board[lastMove.endx, lastMove.endy] = piece.Empty;
                     board[lastMove.startx, lastMove.starty] = piece.Tiger;
                 }
@@ -352,8 +366,8 @@ namespace Baqhchal
                         {
                             for(int dy = -1; dy <= 1; dy++)
                             {
-                                Move m = new Move(i, j, i + dx, j + dy);
-                                if (IsMoveLegal(m, sheepturn)) legalMoves.Add(m);
+                                Move m = new Move(i, j, i + dx, j + dy, sheepturn);
+                                if (IsMoveLegal(m)) legalMoves.Add(m);
                             }
                         }
                     }
@@ -369,8 +383,8 @@ namespace Baqhchal
                         {
                             for (int dy = -2; dy <= 2; dy++)
                             {
-                                Move m = new Move(i, j, i + dx, j + dy);
-                                if (IsMoveLegal(m, sheepturn)) legalMoves.Add(m);
+                                Move m = new Move(i, j, i + dx, j + dy, sheepturn);
+                                if (IsMoveLegal(m)) legalMoves.Add(m);
                             }
                         }
                     }
