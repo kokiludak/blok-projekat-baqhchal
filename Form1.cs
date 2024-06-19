@@ -232,11 +232,22 @@ namespace Baqhchal
                 Console.WriteLine("selected move is not legal");
             }
             firstSel = false;
-
             Invalidate();
+            if (tabla.GameState() != gameState.Active)
+            {
+                System.Windows.Forms.MessageBox.Show("neko je pukao nzm ko");
+                tabla = new Baqhchal(tableSize);
+                opponent = new Engine(Int32.Parse(textUserDepth.Text), tabla);
+                curSheepTurn = playerIsSheep.Checked;
+                firstSel = false;
+
+                Invalidate();
+            }
 
             
-            //EngineMove();
+
+            
+            EngineMove();
         }
 
         public void EngineMove()

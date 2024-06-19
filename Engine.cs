@@ -118,12 +118,12 @@ namespace Baqhchal
             int winvl = Int32.MaxValue;
             //if (sheep) winvl = Int32.MaxValue;
             //else winvl = Int32.MinValue;
-            if (baqhchal.GameState() == gameState.SheepWon) return winvl;
-            if (baqhchal.GameState() == gameState.TigerWon) return -winvl;
+            if (mockBoard.GameState() == gameState.SheepWon) return winvl;
+            if (mockBoard.GameState() == gameState.TigerWon) return -winvl;
 
             
 
-            return false ? -baqhchal.capturedSheep : baqhchal.capturedSheep;
+            return -mockBoard.capturedSheep;
         }
 
     }
