@@ -35,14 +35,14 @@ namespace Baqhchal
         private void Form1_Load(object sender, EventArgs e)
         {
             tabla = new Baqhchal(tableSize);
-            opponent = new Engine(Int32.Parse(textUserDepth.Text), tabla, !playerIsSheep.Checked);
+            opponent = new Engine(Int32.Parse(textUserDepth.Text), tabla);
             curSheepTurn = playerIsSheep.Checked;
         }
 
         private void buttonNewGame_Click(object sender, EventArgs e)
         {
             tabla = new Baqhchal(tableSize);
-            opponent = new Engine(Int32.Parse(textUserDepth.Text), tabla, !playerIsSheep.Checked);
+            opponent = new Engine(Int32.Parse(textUserDepth.Text), tabla);
             curSheepTurn = playerIsSheep.Checked;
             firstSel = false;
 
@@ -121,6 +121,13 @@ namespace Baqhchal
                 }
             }
 
+
+            //draw opponent move
+            if (checkBoxOpponentDraw.Checked)
+            {
+                Move move = opponent.GenerateBestMove(curSheepTurn);
+                g.DrawEllipse(red, move.starty * cellSize + margina - cellSize / 2, move.startx * cellSize + margina - cellSize / 2, cellSize, cellSize);
+            }
         }
 
         private void Form1_MouseDown(object sender, MouseEventArgs e)
@@ -158,7 +165,7 @@ namespace Baqhchal
         private void buttonUndo_Click(object sender, EventArgs e)
         {
             //tabla.unMakeMove(new Move(x1, y1, x2, y2), curSheepTurn);
-
+            Console.WriteLine("undo");
             tabla.undoMove();
             Invalidate();
         }
@@ -188,6 +195,11 @@ namespace Baqhchal
             Invalidate();
         }
 
+        private void checkBoxOpponentDraw_CheckedChanged(object sender, EventArgs e)
+        {
+            Invalidate();
+        }
+
         private void PerformMove(int xr, int yr)
         {
             x2 = xr;
@@ -202,7 +214,8 @@ namespace Baqhchal
             if (allLegalMoves.Contains(myMove))
             {
                 Console.WriteLine("selected move is legal, piece type: " + tabla.board[myMove.startx, myMove.starty]);
-                tabla.MakeMove(myMove, playerIsSheep.Checked);
+                tabla.MakeMove(myMove);
+                curSheepTurn = !curSheepTurn;
             }
             else
             {
@@ -212,13 +225,13 @@ namespace Baqhchal
 
             Invalidate();
 
-            //curSheepTurn = !curSheepTurn;
+            
             //EngineMove();
         }
 
         public void EngineMove()
         {
-            tabla.MakeMove(opponent.GenerateBestMove());
+            tabla.MakeMove(opponent.GenerateBestMove(curSheepTurn));
             curSheepTurn = !curSheepTurn;
         }
     }

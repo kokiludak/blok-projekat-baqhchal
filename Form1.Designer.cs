@@ -35,6 +35,7 @@
             this.buttonUndo = new System.Windows.Forms.Button();
             this.checkBoxDrawLegalMoves = new System.Windows.Forms.CheckBox();
             this.labelCountLegalMoves = new System.Windows.Forms.Label();
+            this.checkBoxOpponentDraw = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // playerIsSheep
@@ -65,7 +66,7 @@
             this.textUserDepth.Name = "textUserDepth";
             this.textUserDepth.Size = new System.Drawing.Size(100, 20);
             this.textUserDepth.TabIndex = 2;
-            this.textUserDepth.Text = "4";
+            this.textUserDepth.Text = "3";
             // 
             // labelFirstSel
             // 
@@ -89,8 +90,6 @@
             // checkBoxDrawLegalMoves
             // 
             this.checkBoxDrawLegalMoves.AutoSize = true;
-            this.checkBoxDrawLegalMoves.Checked = true;
-            this.checkBoxDrawLegalMoves.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxDrawLegalMoves.Location = new System.Drawing.Point(688, 293);
             this.checkBoxDrawLegalMoves.Name = "checkBoxDrawLegalMoves";
             this.checkBoxDrawLegalMoves.Size = new System.Drawing.Size(115, 17);
@@ -108,11 +107,25 @@
             this.labelCountLegalMoves.TabIndex = 6;
             this.labelCountLegalMoves.Text = "Legal moves:";
             // 
+            // checkBoxOpponentDraw
+            // 
+            this.checkBoxOpponentDraw.AutoSize = true;
+            this.checkBoxOpponentDraw.Checked = true;
+            this.checkBoxOpponentDraw.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxOpponentDraw.Location = new System.Drawing.Point(688, 480);
+            this.checkBoxOpponentDraw.Name = "checkBoxOpponentDraw";
+            this.checkBoxOpponentDraw.Size = new System.Drawing.Size(99, 17);
+            this.checkBoxOpponentDraw.TabIndex = 7;
+            this.checkBoxOpponentDraw.Text = "Draw opponent";
+            this.checkBoxOpponentDraw.UseVisualStyleBackColor = true;
+            this.checkBoxOpponentDraw.CheckedChanged += new System.EventHandler(this.checkBoxOpponentDraw_CheckedChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 561);
+            this.Controls.Add(this.checkBoxOpponentDraw);
             this.Controls.Add(this.labelCountLegalMoves);
             this.Controls.Add(this.checkBoxDrawLegalMoves);
             this.Controls.Add(this.buttonUndo);
@@ -141,6 +154,7 @@
         private System.Windows.Forms.Button buttonUndo;
         private System.Windows.Forms.CheckBox checkBoxDrawLegalMoves;
         private System.Windows.Forms.Label labelCountLegalMoves;
+        private System.Windows.Forms.CheckBox checkBoxOpponentDraw;
     }
 }
 

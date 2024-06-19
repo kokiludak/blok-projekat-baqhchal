@@ -20,22 +20,20 @@ namespace Baqhchal
         Move bestMove = null; //ne mora null al aj
         int bestEval = Int32.MinValue;
         bool foundMove = false;
-        bool sheep;
 
         Baqhchal baqhchal;
 
-        public Engine(int depth, Baqhchal baqhchal, bool sheep)
+        public Engine(int depth, Baqhchal baqhchal)
         {
             this.depth = depth;
             this.baqhchal = baqhchal;
-            this.sheep = sheep;
         }
 
 
-        public Move GenerateBestMove()
+        public Move GenerateBestMove(bool sheepTurn)
         {
             foundMove = false;
-            bestEval = Search(depth, sheep);
+            bestEval = Search(depth, sheepTurn);
 
             if(bestMove == null)
             {
@@ -54,12 +52,14 @@ namespace Baqhchal
             if (sheepTurn)
             {
                 int curBestEval = Int32.MinValue;
+                Baqhchal prev = new Baqhchal(baqhchal);
 
                 foreach (Move move in baqhchal.GenerateMoves(sheepTurn))
                 {
+                    baqhchal = new Baqhchal(prev);
                     baqhchal.MakeMove(move);
                     int value = Search(depth_remaining - 1, !sheepTurn, depth + 1, alpha, beta);
-                    baqhchal.undoMove();
+                    //baqhchal.undoMove();
 
                     if(value > curBestEval && depth == 0)
                     {
@@ -80,12 +80,14 @@ namespace Baqhchal
             else
             {
                 int curBestEval = Int32.MaxValue;
+                Baqhchal prev = new Baqhchal(baqhchal);
 
                 foreach(Move move in baqhchal.GenerateMoves(sheepTurn))
                 {
+                    baqhchal = new Baqhchal(prev);
                     baqhchal.MakeMove(move);
                     int value = Search(depth_remaining - 1, !sheepTurn, depth + 1, alpha, beta);
-                    baqhchal.undoMove();
+                    //baqhchal.undoMove();
 
 
                     if (value < curBestEval && depth == 0)
