@@ -79,7 +79,7 @@ namespace Baqhchal
         public piece[,] board { private set; get; }
 
 
-        public const int minSheep = 10;
+        public const int minSheep = 20;
         public int capturedSheep { private set; get; }
         public int numSheep { private set; get; }
 
@@ -158,7 +158,7 @@ namespace Baqhchal
             if (numSheep < minSheep && sheepTurn)
             {
                 //Console.WriteLine("sheep placement logic entered");
-                return board[move.startx, move.starty] == piece.Empty;
+                return board[move.startx, move.starty] == piece.Empty && (move.startx == move.endx && move.starty == move.endy);
             }
 
             //cannot move empty pieces, cannot move ontop of other pieces
@@ -191,6 +191,8 @@ namespace Baqhchal
                     else if (dy == 0 && dx != 2) return false;
 
                     else if (dx != 2 && dy != 2) return false;
+                    else if (dx == 1 && dy == 2) return false;
+                    else if (dx == 2 && dy == 1) return false;
                 }
                 else
                 {
@@ -260,6 +262,7 @@ namespace Baqhchal
                     board[move.endx, move.endy] = piece.Tiger;
 
                     if (!isSearchMove) capturedSheep++;
+                    //
 
                 }
                 else

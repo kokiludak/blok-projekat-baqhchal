@@ -129,7 +129,7 @@ namespace Baqhchal
             {
                 //Move move = opponent.GenerateBestMove(curSheepTurn);
                 g.DrawEllipse(red, bestMove.starty * cellSize + margina - cellSize / 2, bestMove.startx * cellSize + margina - cellSize / 2, cellSize, cellSize);
-                g.DrawEllipse(red, bestMove.endy * cellSize + margina - cellSize / 2, bestMove.endx * cellSize + margina - cellSize / 2, cellSize, cellSize);
+                g.DrawEllipse(orange, bestMove.endy * cellSize + margina - cellSize / 2, bestMove.endx * cellSize + margina - cellSize / 2, cellSize, cellSize);
                 bestMove = null;
             }
         }
