@@ -54,6 +54,8 @@ namespace Baqhchal
             Graphics g = e.Graphics;
             Pen black = new Pen(Color.Black);
             Pen red = new Pen(Color.Red);
+            Pen blue = new Pen(Color.Blue);
+
             SolidBrush tiger = new SolidBrush(Color.FromArgb(212, 173, 2));
             SolidBrush sheep = new SolidBrush(Color.FromArgb(211, 228, 235));
 
@@ -107,6 +109,18 @@ namespace Baqhchal
                 g.DrawRectangle(red, xy - cellSize / 2, xx - cellSize / 2, cellSize, cellSize);
             }
 
+            //draw legal moves
+            if (checkBoxDrawLegalMoves.Checked)
+            {
+                List<Move> legalMoves = tabla.GenerateMoves(curSheepTurn);
+                labelCountLegalMoves.Text = "Legal Moves: " + legalMoves.Count.ToString();
+                foreach(Move move in legalMoves)
+                {
+                    g.DrawEllipse(blue, move.starty * cellSize + margina - cellSize / 2, move.startx * cellSize + margina - cellSize / 2, cellSize, cellSize);
+                    //g.DrawEllipse(blue, move.endx, move.endy, cellSize, cellSize)
+                }
+            }
+
         }
 
         private void Form1_MouseDown(object sender, MouseEventArgs e)
@@ -118,8 +132,9 @@ namespace Baqhchal
 
             Console.WriteLine("points: " + x + " " + y + " " + xr + " " + yr);
 
-            if(Math.Abs(yr - y) + Math.Abs(xr - x) < 0.5f && (xr > 0 && xr < tableSize && yr > 0 && yr < tableSize))
+            if(Math.Abs(yr - y) + Math.Abs(xr - x) < 0.5f && (xr >= 0 && xr < tableSize && yr >= 0 && yr < tableSize))
             {
+                Console.WriteLine("valid point");
                 if (firstSel)
                 {
                     if(tabla.board[(int)xr, (int)yr] == piece.Empty) PointSelected((int)xr, (int)yr);
@@ -143,6 +158,7 @@ namespace Baqhchal
         private void buttonUndo_Click(object sender, EventArgs e)
         {
             //tabla.unMakeMove(new Move(x1, y1, x2, y2), curSheepTurn);
+
             tabla.undoMove();
             Invalidate();
         }
@@ -166,6 +182,12 @@ namespace Baqhchal
                 PerformMove(xr, yr);
             }
         }
+
+        private void checkBoxDrawLegalMoves_CheckedChanged(object sender, EventArgs e)
+        {
+            Invalidate();
+        }
+
         private void PerformMove(int xr, int yr)
         {
             x2 = xr;
@@ -190,8 +212,8 @@ namespace Baqhchal
 
             Invalidate();
 
-            curSheepTurn = !curSheepTurn;
-            EngineMove();
+            //curSheepTurn = !curSheepTurn;
+            //EngineMove();
         }
 
         public void EngineMove()
