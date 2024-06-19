@@ -19,6 +19,8 @@ namespace Baqhchal
         Baqhchal tabla;
         Engine opponent;
 
+        Move bestMove;
+
         const int margina = 50;
         const int cellSize = 100;
 
@@ -55,7 +57,7 @@ namespace Baqhchal
             Pen black = new Pen(Color.Black);
             Pen red = new Pen(Color.Red);
             Pen blue = new Pen(Color.Blue);
-
+            Pen orange = new Pen(Color.Orange);
             SolidBrush tiger = new SolidBrush(Color.FromArgb(212, 173, 2));
             SolidBrush sheep = new SolidBrush(Color.FromArgb(211, 228, 235));
 
@@ -123,10 +125,12 @@ namespace Baqhchal
 
 
             //draw opponent move
-            if (checkBoxOpponentDraw.Checked)
+            if (checkBoxOpponentDraw.Checked && bestMove != null)
             {
-                Move move = opponent.GenerateBestMove(curSheepTurn);
-                g.DrawEllipse(red, move.starty * cellSize + margina - cellSize / 2, move.startx * cellSize + margina - cellSize / 2, cellSize, cellSize);
+                //Move move = opponent.GenerateBestMove(curSheepTurn);
+                g.DrawEllipse(red, bestMove.starty * cellSize + margina - cellSize / 2, bestMove.startx * cellSize + margina - cellSize / 2, cellSize, cellSize);
+                g.DrawEllipse(red, bestMove.endy * cellSize + margina - cellSize / 2, bestMove.endx * cellSize + margina - cellSize / 2, cellSize, cellSize);
+                bestMove = null;
             }
         }
 
@@ -200,11 +204,17 @@ namespace Baqhchal
             Invalidate();
         }
 
+        private void buttonBestMove_Click(object sender, EventArgs e)
+        {
+            bestMove = opponent.GenerateBestMove(curSheepTurn);
+            Invalidate();
+        }
+
         private void PerformMove(int xr, int yr)
         {
             x2 = xr;
             y2 = yr;
-            List<Move> allLegalMoves = tabla.GenerateMoves(playerIsSheep.Checked);
+            List<Move> allLegalMoves = tabla.GenerateMoves(curSheepTurn);
             //foreach(Move m in allLegalMoves) Console.WriteLine(m);
 
 

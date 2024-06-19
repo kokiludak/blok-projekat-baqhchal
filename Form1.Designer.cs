@@ -36,6 +36,7 @@
             this.checkBoxDrawLegalMoves = new System.Windows.Forms.CheckBox();
             this.labelCountLegalMoves = new System.Windows.Forms.Label();
             this.checkBoxOpponentDraw = new System.Windows.Forms.CheckBox();
+            this.buttonBestMove = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // playerIsSheep
@@ -90,6 +91,8 @@
             // checkBoxDrawLegalMoves
             // 
             this.checkBoxDrawLegalMoves.AutoSize = true;
+            this.checkBoxDrawLegalMoves.Checked = true;
+            this.checkBoxDrawLegalMoves.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxDrawLegalMoves.Location = new System.Drawing.Point(688, 293);
             this.checkBoxDrawLegalMoves.Name = "checkBoxDrawLegalMoves";
             this.checkBoxDrawLegalMoves.Size = new System.Drawing.Size(115, 17);
@@ -112,7 +115,7 @@
             this.checkBoxOpponentDraw.AutoSize = true;
             this.checkBoxOpponentDraw.Checked = true;
             this.checkBoxOpponentDraw.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxOpponentDraw.Location = new System.Drawing.Point(688, 480);
+            this.checkBoxOpponentDraw.Location = new System.Drawing.Point(688, 434);
             this.checkBoxOpponentDraw.Name = "checkBoxOpponentDraw";
             this.checkBoxOpponentDraw.Size = new System.Drawing.Size(99, 17);
             this.checkBoxOpponentDraw.TabIndex = 7;
@@ -120,11 +123,22 @@
             this.checkBoxOpponentDraw.UseVisualStyleBackColor = true;
             this.checkBoxOpponentDraw.CheckedChanged += new System.EventHandler(this.checkBoxOpponentDraw_CheckedChanged);
             // 
+            // buttonBestMove
+            // 
+            this.buttonBestMove.Location = new System.Drawing.Point(695, 482);
+            this.buttonBestMove.Name = "buttonBestMove";
+            this.buttonBestMove.Size = new System.Drawing.Size(75, 23);
+            this.buttonBestMove.TabIndex = 8;
+            this.buttonBestMove.Text = "Best Move";
+            this.buttonBestMove.UseVisualStyleBackColor = true;
+            this.buttonBestMove.Click += new System.EventHandler(this.buttonBestMove_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 561);
+            this.Controls.Add(this.buttonBestMove);
             this.Controls.Add(this.checkBoxOpponentDraw);
             this.Controls.Add(this.labelCountLegalMoves);
             this.Controls.Add(this.checkBoxDrawLegalMoves);
@@ -155,6 +169,7 @@
         private System.Windows.Forms.CheckBox checkBoxDrawLegalMoves;
         private System.Windows.Forms.Label labelCountLegalMoves;
         private System.Windows.Forms.CheckBox checkBoxOpponentDraw;
+        private System.Windows.Forms.Button buttonBestMove;
     }
 }
 

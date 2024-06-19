@@ -22,7 +22,7 @@ namespace Baqhchal
         bool foundMove = false;
 
         Baqhchal baqhchal;
-
+        Baqhchal mockBoard;
         public Engine(int depth, Baqhchal baqhchal)
         {
             this.depth = depth;
@@ -32,6 +32,7 @@ namespace Baqhchal
 
         public Move GenerateBestMove(bool sheepTurn)
         {
+            mockBoard = new Baqhchal(baqhchal);
             foundMove = false;
             bestEval = Search(depth, sheepTurn);
 
@@ -52,12 +53,12 @@ namespace Baqhchal
             if (sheepTurn)
             {
                 int curBestEval = Int32.MinValue;
-                Baqhchal prev = new Baqhchal(baqhchal);
+                Baqhchal prev = new Baqhchal(mockBoard);
 
-                foreach (Move move in baqhchal.GenerateMoves(sheepTurn))
+                foreach (Move move in prev.GenerateMoves(sheepTurn))
                 {
-                    baqhchal = new Baqhchal(prev);
-                    baqhchal.MakeMove(move);
+                    mockBoard = new Baqhchal(prev);
+                    mockBoard.MakeMove(move);
                     int value = Search(depth_remaining - 1, !sheepTurn, depth + 1, alpha, beta);
                     //baqhchal.undoMove();
 
@@ -68,7 +69,9 @@ namespace Baqhchal
                     bestEval = Math.Max(bestEval, value);
                     curBestEval = Math.Max(curBestEval, value);
                     alpha = Math.Max(alpha, value);
-                    
+                    mockBoard = new Baqhchal(prev);
+
+
                     if(beta <= alpha)
                     {
                         break;
@@ -82,10 +85,10 @@ namespace Baqhchal
                 int curBestEval = Int32.MaxValue;
                 Baqhchal prev = new Baqhchal(baqhchal);
 
-                foreach(Move move in baqhchal.GenerateMoves(sheepTurn))
+                foreach(Move move in prev.GenerateMoves(sheepTurn))
                 {
-                    baqhchal = new Baqhchal(prev);
-                    baqhchal.MakeMove(move);
+                    mockBoard = new Baqhchal(prev);
+                    mockBoard.MakeMove(move);
                     int value = Search(depth_remaining - 1, !sheepTurn, depth + 1, alpha, beta);
                     //baqhchal.undoMove();
 
@@ -97,7 +100,7 @@ namespace Baqhchal
 
                     curBestEval = Math.Min(curBestEval, value);
                     beta = Math.Min(beta, curBestEval);
-
+                    mockBoard = new Baqhchal(prev);
                     if(beta <= alpha)
                     {
                         break;
