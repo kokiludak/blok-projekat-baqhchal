@@ -59,7 +59,7 @@ namespace Baqhchal
                 {
                     baqhchal.MakeMove(move, sheepTurn);
                     int value = Search(depth_remaining - 1, !sheepTurn, depth + 1, alpha, beta);
-                    baqhchal.unMakeMove(move, sheepTurn);
+                    baqhchal.undoMove(sheepTurn);
 
                     if(value > curBestEval && depth == 0)
                     {
@@ -85,7 +85,7 @@ namespace Baqhchal
                 {
                     baqhchal.MakeMove(move, sheepTurn);
                     int value = Search(depth_remaining - 1, !sheepTurn, depth + 1, alpha, beta);
-                    baqhchal.unMakeMove(move, sheepTurn);
+                    baqhchal.undoMove(sheepTurn);
 
 
                     curBestEval = Math.Min(curBestEval, value);

@@ -228,7 +228,7 @@ namespace Baqhchal
             Console.WriteLine("made move: " + move);
             if (sheepTurn)
             {
-                if(numSheep < minSheep)
+                if (numSheep < minSheep)
                 {
                     //place sheep;
                     board[move.startx, move.starty] = piece.Sheep;
@@ -259,25 +259,30 @@ namespace Baqhchal
                 }
             }
 
-            if (!isSearchMove) boardStates.Add(board);
-
+            if (!isSearchMove)
+            {
+                boardStates.Add(board);
+                moveHistory.Push(move);
+            }
         }
-
         public void unMakeMove(Move move, bool sheepTurn)
         {
             //throw new NotImplementedException();
             Console.WriteLine("unmade move: " + move);
             boardStates.Remove(board);
+
             if (sheepTurn)
             {
-                if(numSheep <= minSheep)
+                Console.WriteLine("unmaking sheeep Turn");
+                if(numSheep < minSheep)
                 {
+                    Console.WriteLine("wth bruh");
                     board[move.startx, move.starty] = piece.Empty;
                     numSheep--;
                 }
                 else
                 {
-                    Console.WriteLine("you have cancer dog !");
+                    
                     board[move.startx, move.starty] = piece.Sheep;
                     board[move.endx, move.endy] = piece.Empty;
                 }
@@ -294,6 +299,41 @@ namespace Baqhchal
                 {
                     board[move.endx, move.endy] = piece.Empty;
                     board[move.startx, move.starty] = piece.Tiger;
+                }
+            }
+        }
+
+        public void undoMove(bool sheepTurn)
+        {
+            if (moveHistory.Count == 0) return;
+
+            Move lastMove = moveHistory.Pop();
+            if (sheepTurn)
+            {
+                if(lastMove.startx == lastMove.endx && lastMove.starty == lastMove.endy)
+                {
+                    board[lastMove.startx, lastMove.starty] = piece.Empty;
+                    numSheep--;
+                }
+                else
+                {
+                    board[lastMove.startx, lastMove.starty] = piece.Sheep;
+                    board[lastMove.endx, lastMove.endy] = piece.Empty;
+                }
+            }
+            else
+            {
+                if (lastMove.isMoveCapture())
+                {
+                    board[lastMove.endx, lastMove.endy] = piece.Empty;
+                    board[(lastMove.endx + lastMove.startx) / 2, (lastMove.endy + lastMove.starty) / 2] = piece.Sheep;
+                    board[lastMove.startx, lastMove.starty] = piece.Tiger;
+                    capturedSheep--;
+                }
+                else
+                {
+                    board[lastMove.endx, lastMove.endy] = piece.Empty;
+                    board[lastMove.startx, lastMove.starty] = piece.Tiger;
                 }
             }
         }

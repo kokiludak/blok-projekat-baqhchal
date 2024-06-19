@@ -118,7 +118,7 @@ namespace Baqhchal
 
             Console.WriteLine("points: " + x + " " + y + " " + xr + " " + yr);
 
-            if(Math.Abs(yr - y) + Math.Abs(xr - x) < 0.5f)
+            if(Math.Abs(yr - y) + Math.Abs(xr - x) < 0.5f && (xr > 0 && xr < tableSize && yr > 0 && yr < tableSize))
             {
                 if (firstSel)
                 {
@@ -142,7 +142,8 @@ namespace Baqhchal
 
         private void buttonUndo_Click(object sender, EventArgs e)
         {
-            tabla.unMakeMove(new Move(x1, y1, x2, y2), curSheepTurn);
+            //tabla.unMakeMove(new Move(x1, y1, x2, y2), curSheepTurn);
+            tabla.undoMove(curSheepTurn);
             Invalidate();
         }
 
