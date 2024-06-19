@@ -45,7 +45,7 @@ namespace Baqhchal
         public Move GenerateBestMove(bool sheepTurn)
         {
             mockBoard = new Baqhchal(baqhchal);
-            foundMove = false;
+            
             int curEval = Search(depth, sheepTurn);
 
             if(bestMove == null)
@@ -67,13 +67,12 @@ namespace Baqhchal
 
             if (sheepTurn)
             {
-                int curBestEval = -74928472;
+                int curBestEval = Int32.MinValue;
                 Baqhchal prev = new Baqhchal(mockBoard);
 
                 foreach (Move move in mockBoard.GenerateMoves(sheepTurn))
                 {
-                    //Console.Write("evaluate move: " + move + " at depth: " + depth);
-                    //mockBoard = new Baqhchal(prev);
+  
                     mockBoard.MakeMove(move);
                     int value = Search(depth_remaining - 1, false, depth + 1, alpha, beta);
                     //Console.WriteLine(" value: " + value);
@@ -99,7 +98,7 @@ namespace Baqhchal
             }
             else
             {
-                int curBestEval = 134214214;
+                int curBestEval = int.MaxValue;
                 Baqhchal prev = new Baqhchal(mockBoard);
                 //Console.WriteLine("SEARCH ITERATION DEPTH: " + depth);
 
@@ -107,6 +106,12 @@ namespace Baqhchal
                 {
                     //Console.Write("evaluate move: " + move + " at depth: " + depth);
                     //mockBoard = new Baqhchal(prev);
+                    Console.WriteLine(move);
+                    if(move.startx == 4 && move.starty == 4 && move.endx == 2 && move.endy == 4)
+                    {
+                        Console.WriteLine("ngia");
+                    }
+
                     mockBoard.MakeMove(move);
                     int value = Search(depth_remaining - 1, true, depth + 1, alpha, beta);
                     //Console.WriteLine(" value: " + value);
@@ -114,7 +119,7 @@ namespace Baqhchal
 
 
                     if (depth == 0) Console.WriteLine("value: " + value);
-                    if (value < curBestEval && depth == 0)
+                    if (value < curBestEval)
                     {
                         Console.WriteLine("new best move" + move + value);
                         bestMove = move;
@@ -142,8 +147,8 @@ namespace Baqhchal
             int winvl = Int32.MaxValue;
             //if (sheep) winvl = Int32.MaxValue;
             //else winvl = Int32.MinValue;
-            if (mockBoard.GameState() == gameState.SheepWon) return winvl;
-            if (mockBoard.GameState() == gameState.TigerWon) return -winvl;
+            if (mockBoard.GameState() == gameState.SheepWon) return int.MaxValue;
+            if (mockBoard.GameState() == gameState.TigerWon) return int.MinValue;
 
             
 
