@@ -141,11 +141,11 @@ namespace Baqhchal
             double xr = Math.Round(x);
             double yr = Math.Round(y);
 
-            Console.WriteLine("points: " + x + " " + y + " " + xr + " " + yr);
+            //Console.WriteLine("points: " + x + " " + y + " " + xr + " " + yr);
 
             if(Math.Abs(yr - y) + Math.Abs(xr - x) < 0.5f && (xr >= 0 && xr < tableSize && yr >= 0 && yr < tableSize))
             {
-                Console.WriteLine("valid point");
+                //Console.WriteLine("valid point");
                 if (firstSel)
                 {
                     if(tabla.board[(int)xr, (int)yr] == piece.Empty) PointSelected((int)xr, (int)yr);
@@ -154,11 +154,12 @@ namespace Baqhchal
                 {
                     if (curSheepTurn && tabla.numSheep < tabla.MinSheep && tabla.board[(int)xr, (int)yr] == piece.Empty)
                     {
-                      PointSelected((int)xr, (int)yr);
+                        PointSelected((int)xr, (int)yr);
                     }
+                    else if (tabla.board[(int)xr, (int)yr] != piece.Empty) PointSelected((int)xr, (int)yr);
                     else
                     {
-                        if (tabla.board[(int)xr, (int)yr] != piece.Empty) PointSelected((int)xr, (int)yr);
+                        firstSel = false;
                     }
                 }
             }
@@ -169,7 +170,7 @@ namespace Baqhchal
         private void buttonUndo_Click(object sender, EventArgs e)
         {
             //tabla.unMakeMove(new Move(x1, y1, x2, y2), curSheepTurn);
-            Console.WriteLine("undo");
+            //Console.WriteLine("undo");
             tabla.undoMove();
             Invalidate();
         }
@@ -183,13 +184,13 @@ namespace Baqhchal
                 firstSel = true;
                 if(curSheepTurn && tabla.numSheep < tabla.MinSheep)
                 {
-                    Console.WriteLine("point selected: place sheep");
+                   // Console.WriteLine("point selected: place sheep");
                     PerformMove(xr, yr);
                 }
             }
             else
             {
-                Console.WriteLine("point selected: movement");
+                //Console.WriteLine("point selected: movement");
                 PerformMove(xr, yr);
             }
         }
@@ -226,6 +227,7 @@ namespace Baqhchal
                 Console.WriteLine("selected move is legal, piece type: " + tabla.board[myMove.startx, myMove.starty]);
                 tabla.MakeMove(myMove);
                 curSheepTurn = !curSheepTurn;
+                EngineMove();
             }
             else
             {
@@ -235,7 +237,7 @@ namespace Baqhchal
             Invalidate();
             if (tabla.GameState() != gameState.Active)
             {
-                System.Windows.Forms.MessageBox.Show("neko je pukao nzm ko");
+                MessageBox.Show("neko je pukao nzm ko");
                 tabla = new Baqhchal(tableSize);
                 opponent = new Engine(Int32.Parse(textUserDepth.Text), tabla);
                 curSheepTurn = playerIsSheep.Checked;
@@ -247,11 +249,12 @@ namespace Baqhchal
             
 
             
-            EngineMove();
+           
         }
 
         public void EngineMove()
         {
+            Console.WriteLine("asking engine for move: " + (curSheepTurn ? "Sheep" : "Tiger"));
             tabla.MakeMove(opponent.GenerateBestMove(curSheepTurn));
             curSheepTurn = !curSheepTurn;
         }

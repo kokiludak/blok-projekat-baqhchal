@@ -14,11 +14,23 @@ namespace Baqhchal
      * 
      */
     //
+
+    public class Node
+    {
+        public List<Node> Children;
+        public int data;
+
+        public Node(List<Node> children, int data)
+        {
+            Children = children;
+            this.data = data;
+        }
+    }
     public class Engine
     {
         public int depth;
         Move bestMove = null; //ne mora null al aj
-        int bestEval = Int32.MinValue;
+        int bestEval = 0;
         bool foundMove = false;
 
         Baqhchal baqhchal;
@@ -34,39 +46,43 @@ namespace Baqhchal
         {
             mockBoard = new Baqhchal(baqhchal);
             foundMove = false;
-            bestEval = Search(depth, sheepTurn);
+            int curEval = Search(depth, sheepTurn);
 
             if(bestMove == null)
             {
                 throw new Exception("no move found");
             }
+
+            Console.WriteLine("BEST MOVE: " +  bestMove);
+            Console.WriteLine("best eval: " + bestEval);
             return bestMove;
         }
 
         public int Search(int depth_remaining, bool sheepTurn, int depth = 0, int alpha = Int32.MinValue, int beta = Int32.MaxValue)
         {
-            if(baqhchal.GameState() != gameState.Active || depth_remaining == 0)
+            if(mockBoard.GameState() != gameState.Active || depth_remaining == 0)
             {
                 return Eval();
             }
 
             if (sheepTurn)
             {
-                int curBestEval = Int32.MinValue;
+                int curBestEval = -74928472;
                 Baqhchal prev = new Baqhchal(mockBoard);
 
-                foreach (Move move in prev.GenerateMoves(sheepTurn))
+                foreach (Move move in mockBoard.GenerateMoves(sheepTurn))
                 {
-                    mockBoard = new Baqhchal(prev);
+                    //Console.Write("evaluate move: " + move + " at depth: " + depth);
+                    //mockBoard = new Baqhchal(prev);
                     mockBoard.MakeMove(move);
-                    int value = Search(depth_remaining - 1, !sheepTurn, depth + 1, alpha, beta);
-                    //baqhchal.undoMove();
-
+                    int value = Search(depth_remaining - 1, false, depth + 1, alpha, beta);
+                    //Console.WriteLine(" value: " + value);
                     if(value > curBestEval && depth == 0)
                     {
                         bestMove = move;
+                        bestEval = Math.Max(bestEval, value);
                     }
-                    bestEval = Math.Max(bestEval, value);
+                    
                     curBestEval = Math.Max(curBestEval, value);
                     alpha = Math.Max(alpha, value);
                     mockBoard = new Baqhchal(prev);
@@ -74,6 +90,7 @@ namespace Baqhchal
 
                     if(beta <= alpha)
                     {
+                        //Console.WriteLine("maximizer prune");
                         break;
                     }
 
@@ -82,20 +99,26 @@ namespace Baqhchal
             }
             else
             {
-                int curBestEval = Int32.MaxValue;
-                Baqhchal prev = new Baqhchal(baqhchal);
+                int curBestEval = 134214214;
+                Baqhchal prev = new Baqhchal(mockBoard);
+                //Console.WriteLine("SEARCH ITERATION DEPTH: " + depth);
 
-                foreach(Move move in prev.GenerateMoves(sheepTurn))
+                foreach(Move move in mockBoard.GenerateMoves(sheepTurn))
                 {
-                    mockBoard = new Baqhchal(prev);
+                    //Console.Write("evaluate move: " + move + " at depth: " + depth);
+                    //mockBoard = new Baqhchal(prev);
                     mockBoard.MakeMove(move);
-                    int value = Search(depth_remaining - 1, !sheepTurn, depth + 1, alpha, beta);
-                    //baqhchal.undoMove();
+                    int value = Search(depth_remaining - 1, true, depth + 1, alpha, beta);
+                    //Console.WriteLine(" value: " + value);
 
 
+
+                    if (depth == 0) Console.WriteLine("value: " + value);
                     if (value < curBestEval && depth == 0)
                     {
+                        Console.WriteLine("new best move" + move + value);
                         bestMove = move;
+                        bestEval = Math.Min(bestEval, value);
                     }
 
                     curBestEval = Math.Min(curBestEval, value);
@@ -103,6 +126,7 @@ namespace Baqhchal
                     mockBoard = new Baqhchal(prev);
                     if(beta <= alpha)
                     {
+                        //Console.WriteLine("minimizer prune");
                         break;
                     }
                 }
