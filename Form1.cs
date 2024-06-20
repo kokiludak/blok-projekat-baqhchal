@@ -222,7 +222,7 @@ namespace Baqhchal
         private void buttonRotate_Click(object sender, EventArgs e)
         {
             tabla = Baqhchal.grabRotation(tabla, 1);
-
+            opponent.baqhchal = tabla;
             Invalidate();
         }
 

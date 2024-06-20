@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Security.Permissions;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -37,6 +38,15 @@ namespace Baqhchal
             this.sheepMove = sheepMove;
         }
 
+        public Move(Move other)
+        {
+            startx = other.startx;
+            starty = other.starty;
+            endx = other.endx;
+            endy = other.endy;
+            sheepMove = other.sheepMove;
+
+        }
         public override bool Equals(object obj)
         {
             if (obj == null) return false;
@@ -58,6 +68,11 @@ namespace Baqhchal
             return true;
 
         }
+
+        public override int GetHashCode()
+        {
+            return startx + endx * 17 + starty * 17 * 17 + endy * 17 * 17 * 17;
+        }
         public override string ToString()
         {
             return startx.ToString() + " " + starty.ToString() + " " + endx.ToString() + " " + endy.ToString() + " " + sheepMove.ToString();
@@ -75,7 +90,7 @@ namespace Baqhchal
     {
         HashSet<piece[,]> boardStates;
         private int tableSize = 5;
-        Stack<Move> moveHistory;
+        public Stack<Move> moveHistory;
         public piece[,] board { private set; get; }
 
 
@@ -138,7 +153,8 @@ namespace Baqhchal
             Stack<Move> temp = new Stack<Move>();
             foreach(Move m in copy.moveHistory)
             {
-                temp.Push(m);
+                Move nw = new Move(m);
+                temp.Push(nw);
             }
             foreach(Move m in temp) moveHistory.Push(m);
         }
@@ -339,9 +355,9 @@ namespace Baqhchal
             }
         }
 
-        public void undoMove()
+        public Move undoMove()
         {
-            if (moveHistory.Count == 0) return;
+            if (moveHistory.Count == 0) return null;
 
 
             Move lastMove = moveHistory.Pop();
@@ -371,11 +387,13 @@ namespace Baqhchal
                 }
                 else
                 {
-                    Console.WriteLine("xd tiger undo");
+                    
                     board[lastMove.endx, lastMove.endy] = piece.Empty;
                     board[lastMove.startx, lastMove.starty] = piece.Tiger;
                 }
             }
+
+            return lastMove;
         }
 
         public List<Move> GenerateMoves(bool sheepturn)
@@ -442,6 +460,8 @@ namespace Baqhchal
         public bool Equals(Baqhchal other)
         {
             if(tableSize != other.tableSize) return false;
+            if (capturedSheep != other.capturedSheep) return false;
+            if (numSheep != other.numSheep) return false;
             for(int i = 0; i < tableSize; i++)
             {
                 for(int j = 0; j < tableSize; j++)
@@ -450,6 +470,11 @@ namespace Baqhchal
                 }
             }
             return true;
+        }
+
+        public override int GetHashCode()
+        {
+            return numSheep + capturedSheep * 17 + board.GetHashCode() * 17 * 17;
         }
     }
 }

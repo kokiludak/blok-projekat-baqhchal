@@ -49,9 +49,9 @@
             this.playerIsSheep.CheckState = System.Windows.Forms.CheckState.Checked;
             this.playerIsSheep.Location = new System.Drawing.Point(692, 38);
             this.playerIsSheep.Name = "playerIsSheep";
-            this.playerIsSheep.Size = new System.Drawing.Size(80, 17);
+            this.playerIsSheep.Size = new System.Drawing.Size(92, 17);
             this.playerIsSheep.TabIndex = 0;
-            this.playerIsSheep.Text = "100% rights";
+            this.playerIsSheep.Text = "Play as sheep";
             this.playerIsSheep.UseVisualStyleBackColor = false;
             // 
             // buttonNewGame
