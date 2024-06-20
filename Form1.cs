@@ -174,6 +174,7 @@ namespace Baqhchal
             //tabla.unMakeMove(new Move(x1, y1, x2, y2), curSheepTurn);
             //Console.WriteLine("undo");
             tabla.undoMove();
+            curSheepTurn = !curSheepTurn;
             Invalidate();
         }
 

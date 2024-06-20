@@ -173,7 +173,13 @@ namespace Baqhchal
                     }
                 }
             }
-          
+            Stack<Move> history = new Stack<Move>(b.moveHistory);
+
+            ret.moveHistory = new Stack<Move>();
+            foreach(Move m in history)
+            {
+                ret.moveHistory.Push(new Move(b.tableSize - m.startx - 1, m.starty, b.tableSize - m.endx - 1, m.endy, m.sheepMove));
+            }
 
             return ret;
         }
