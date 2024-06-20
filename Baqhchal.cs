@@ -245,12 +245,12 @@ namespace Baqhchal
             {
 
                 //ovo je uzasna implementacija. Moram da popravim unmakemove i makemove
-                Baqhchal b = new Baqhchal(this);
-                b.MakeMove(move, true);
-                if (boardStates.Contains(b.board))
-                {
-                    return false;
-                }
+                //Baqhchal b = new Baqhchal(this);
+                //b.MakeMove(move, true);
+                //if (boardStates.Contains(b.board))
+                //{
+                   // return false;
+                //}
             }
 
 
@@ -345,7 +345,7 @@ namespace Baqhchal
 
 
             Move lastMove = moveHistory.Pop();
-            Console.WriteLine("undoing move: " + lastMove);
+            //Console.WriteLine("undoing move: " + lastMove);
             bool sheepTurn = lastMove.sheepMove;
             if (sheepTurn)
             {

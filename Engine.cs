@@ -76,14 +76,14 @@ namespace Baqhchal
             if (sheepTurn)
             {
                 int curBestEval = int.MinValue;
-                Baqhchal prev = new Baqhchal(mockBoard);
+                //Baqhchal prev = new Baqhchal(mockBoard);
 
                 foreach (Move move in mockBoard.GenerateMoves(sheepTurn))
                 {
   
                     mockBoard.MakeMove(move);
                     int childValue = Search(depth_remaining - 1, false, depth + 1, alpha, beta);
-
+                    mockBoard.undoMove();
 
                     
 
@@ -97,7 +97,7 @@ namespace Baqhchal
                   
                     curBestEval = Math.Max(curBestEval, childValue);
                     alpha = Math.Max(alpha, childValue);
-                    mockBoard = new Baqhchal(prev);
+                    //mockBoard = new Baqhchal(prev);
 
                     
 
@@ -120,14 +120,14 @@ namespace Baqhchal
             else
             {
                 int curBestEval = int.MaxValue;
-                Baqhchal prev = new Baqhchal(mockBoard);
+                //Baqhchal prev = new Baqhchal(mockBoard);
 
                 foreach(Move move in mockBoard.GenerateMoves(sheepTurn))
                 {
 
                     mockBoard.MakeMove(move);
                     int childValue = Search(depth_remaining - 1, true, depth + 1, alpha, beta);
-
+                    mockBoard.undoMove();
                     //Console.WriteLine("Move: " + move + " value: " + childValue + " depth: " + depth);
 
                     if (childValue < curBestEval && depth == 0)
@@ -140,7 +140,7 @@ namespace Baqhchal
 
                     curBestEval = Math.Min(curBestEval, childValue);
                     beta = Math.Min(beta, curBestEval);
-                    mockBoard = new Baqhchal(prev);
+                    //mockBoard = new Baqhchal(prev);
                     if(beta <= alpha)
                     {
                         break;
