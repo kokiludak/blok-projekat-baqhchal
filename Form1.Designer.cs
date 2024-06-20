@@ -91,8 +91,6 @@
             // checkBoxDrawLegalMoves
             // 
             this.checkBoxDrawLegalMoves.AutoSize = true;
-            this.checkBoxDrawLegalMoves.Checked = true;
-            this.checkBoxDrawLegalMoves.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxDrawLegalMoves.Location = new System.Drawing.Point(688, 293);
             this.checkBoxDrawLegalMoves.Name = "checkBoxDrawLegalMoves";
             this.checkBoxDrawLegalMoves.Size = new System.Drawing.Size(115, 17);

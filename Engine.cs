@@ -62,76 +62,75 @@ namespace Baqhchal
         {
             if(mockBoard.GameState() != gameState.Active || depth_remaining == 0)
             {
+               
                 return Eval();
             }
 
             if (sheepTurn)
             {
-                int curBestEval = Int32.MinValue;
+                int curBestEval = int.MinValue;
                 Baqhchal prev = new Baqhchal(mockBoard);
 
                 foreach (Move move in mockBoard.GenerateMoves(sheepTurn))
                 {
   
                     mockBoard.MakeMove(move);
-                    int value = Search(depth_remaining - 1, false, depth + 1, alpha, beta);
-                    //Console.WriteLine(" value: " + value);
-                    if(value > curBestEval && depth == 0)
+                    int childValue = Search(depth_remaining - 1, false, depth + 1, alpha, beta);
+
+                    //Console.WriteLine("Move: " + move + " value: " + childValue + " depth: " + depth);
+
+                    
+
+                    if (childValue > curBestEval && depth == 0)
                     {
                         bestMove = move;
-                        bestEval = Math.Max(bestEval, value);
+                        bestEval = Math.Max(bestEval, childValue); // debug value
                     }
-                    
-                    curBestEval = Math.Max(curBestEval, value);
-                    alpha = Math.Max(alpha, value);
+
+
+                    Console.WriteLine("before set num sheep " + mockBoard.capturedSheep);
+                    curBestEval = Math.Max(curBestEval, childValue);
+                    alpha = Math.Max(alpha, childValue);
                     mockBoard = new Baqhchal(prev);
 
+                    Console.WriteLine("after sheep " + mockBoard.capturedSheep);
 
-                    if(beta <= alpha)
+
+                    if (beta <= alpha)
                     {
-                        //Console.WriteLine("maximizer prune");
                         break;
                     }
 
                 }
+                //Console.WriteLine("sheep return value: " + curBestEval);
                 return curBestEval;
             }
             else
             {
                 int curBestEval = int.MaxValue;
                 Baqhchal prev = new Baqhchal(mockBoard);
-                //Console.WriteLine("SEARCH ITERATION DEPTH: " + depth);
 
                 foreach(Move move in mockBoard.GenerateMoves(sheepTurn))
                 {
-                    //Console.Write("evaluate move: " + move + " at depth: " + depth);
-                    //mockBoard = new Baqhchal(prev);
-                    Console.WriteLine(move);
-                    if(move.startx == 4 && move.starty == 4 && move.endx == 2 && move.endy == 4)
-                    {
-                        Console.WriteLine("ngia");
-                    }
 
                     mockBoard.MakeMove(move);
-                    int value = Search(depth_remaining - 1, true, depth + 1, alpha, beta);
-                    //Console.WriteLine(" value: " + value);
+                    int childValue = Search(depth_remaining - 1, true, depth + 1, alpha, beta);
 
+                    //Console.WriteLine("Move: " + move + " value: " + childValue + " depth: " + depth);
 
-
-                    if (depth == 0) Console.WriteLine("value: " + value);
-                    if (value < curBestEval)
+                    if (childValue < curBestEval && depth == 0)
                     {
-                        Console.WriteLine("new best move" + move + value);
                         bestMove = move;
-                        bestEval = Math.Min(bestEval, value);
+                        bestEval = Math.Min(bestEval, childValue);
+
+
                     }
 
-                    curBestEval = Math.Min(curBestEval, value);
+                    curBestEval = Math.Min(curBestEval, childValue);
                     beta = Math.Min(beta, curBestEval);
                     mockBoard = new Baqhchal(prev);
                     if(beta <= alpha)
                     {
-                        //Console.WriteLine("minimizer prune");
                         break;
                     }
                 }
@@ -144,13 +143,10 @@ namespace Baqhchal
 
         public int Eval()
         {
-            int winvl = Int32.MaxValue;
-            //if (sheep) winvl = Int32.MaxValue;
-            //else winvl = Int32.MinValue;
             if (mockBoard.GameState() == gameState.SheepWon) return int.MaxValue;
             if (mockBoard.GameState() == gameState.TigerWon) return int.MinValue;
 
-            
+            //Console.WriteLine("eval " + -mockBoard.capturedSheep);
 
             return -mockBoard.capturedSheep;
         }

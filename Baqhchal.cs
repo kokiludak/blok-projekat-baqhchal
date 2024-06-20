@@ -118,6 +118,10 @@ namespace Baqhchal
             board = new piece[tableSize, tableSize];
             moveHistory = new Stack<Move>();
 
+            capturedSheep = copy.capturedSheep;
+            
+
+
             foreach(piece[,] board in boardStates)
             {
                 boardStates.Add(board);
@@ -261,7 +265,7 @@ namespace Baqhchal
                     board[(move.startx + move.endx) / 2, (move.starty + move.endy) / 2] = piece.Empty;
                     board[move.endx, move.endy] = piece.Tiger;
 
-                    if (!isSearchMove) capturedSheep++;
+                    if (true) capturedSheep++;
                     //
 
                 }
