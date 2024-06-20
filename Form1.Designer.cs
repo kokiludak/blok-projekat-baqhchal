@@ -37,6 +37,9 @@
             this.labelCountLegalMoves = new System.Windows.Forms.Label();
             this.checkBoxOpponentDraw = new System.Windows.Forms.CheckBox();
             this.buttonBestMove = new System.Windows.Forms.Button();
+            this.checkBoxAutoPlay = new System.Windows.Forms.CheckBox();
+            this.buttonEngineMove = new System.Windows.Forms.Button();
+            this.buttonRotate = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // playerIsSheep
@@ -102,7 +105,7 @@
             // labelCountLegalMoves
             // 
             this.labelCountLegalMoves.AutoSize = true;
-            this.labelCountLegalMoves.Location = new System.Drawing.Point(692, 400);
+            this.labelCountLegalMoves.Location = new System.Drawing.Point(692, 325);
             this.labelCountLegalMoves.Name = "labelCountLegalMoves";
             this.labelCountLegalMoves.Size = new System.Drawing.Size(70, 13);
             this.labelCountLegalMoves.TabIndex = 6;
@@ -113,7 +116,7 @@
             this.checkBoxOpponentDraw.AutoSize = true;
             this.checkBoxOpponentDraw.Checked = true;
             this.checkBoxOpponentDraw.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxOpponentDraw.Location = new System.Drawing.Point(688, 434);
+            this.checkBoxOpponentDraw.Location = new System.Drawing.Point(688, 354);
             this.checkBoxOpponentDraw.Name = "checkBoxOpponentDraw";
             this.checkBoxOpponentDraw.Size = new System.Drawing.Size(99, 17);
             this.checkBoxOpponentDraw.TabIndex = 7;
@@ -123,7 +126,7 @@
             // 
             // buttonBestMove
             // 
-            this.buttonBestMove.Location = new System.Drawing.Point(695, 482);
+            this.buttonBestMove.Location = new System.Drawing.Point(695, 387);
             this.buttonBestMove.Name = "buttonBestMove";
             this.buttonBestMove.Size = new System.Drawing.Size(75, 23);
             this.buttonBestMove.TabIndex = 8;
@@ -131,11 +134,44 @@
             this.buttonBestMove.UseVisualStyleBackColor = true;
             this.buttonBestMove.Click += new System.EventHandler(this.buttonBestMove_Click);
             // 
+            // checkBoxAutoPlay
+            // 
+            this.checkBoxAutoPlay.AutoSize = true;
+            this.checkBoxAutoPlay.Location = new System.Drawing.Point(699, 429);
+            this.checkBoxAutoPlay.Name = "checkBoxAutoPlay";
+            this.checkBoxAutoPlay.Size = new System.Drawing.Size(71, 17);
+            this.checkBoxAutoPlay.TabIndex = 9;
+            this.checkBoxAutoPlay.Text = "Auto Play";
+            this.checkBoxAutoPlay.UseVisualStyleBackColor = true;
+            // 
+            // buttonEngineMove
+            // 
+            this.buttonEngineMove.Location = new System.Drawing.Point(699, 470);
+            this.buttonEngineMove.Name = "buttonEngineMove";
+            this.buttonEngineMove.Size = new System.Drawing.Size(75, 23);
+            this.buttonEngineMove.TabIndex = 10;
+            this.buttonEngineMove.Text = "Play engine";
+            this.buttonEngineMove.UseVisualStyleBackColor = true;
+            this.buttonEngineMove.Click += new System.EventHandler(this.buttonEngineMove_Click);
+            // 
+            // buttonRotate
+            // 
+            this.buttonRotate.Location = new System.Drawing.Point(699, 521);
+            this.buttonRotate.Name = "buttonRotate";
+            this.buttonRotate.Size = new System.Drawing.Size(75, 23);
+            this.buttonRotate.TabIndex = 11;
+            this.buttonRotate.Text = "Rotate ";
+            this.buttonRotate.UseVisualStyleBackColor = true;
+            this.buttonRotate.Click += new System.EventHandler(this.buttonRotate_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 561);
+            this.Controls.Add(this.buttonRotate);
+            this.Controls.Add(this.buttonEngineMove);
+            this.Controls.Add(this.checkBoxAutoPlay);
             this.Controls.Add(this.buttonBestMove);
             this.Controls.Add(this.checkBoxOpponentDraw);
             this.Controls.Add(this.labelCountLegalMoves);
@@ -168,6 +204,9 @@
         private System.Windows.Forms.Label labelCountLegalMoves;
         private System.Windows.Forms.CheckBox checkBoxOpponentDraw;
         private System.Windows.Forms.Button buttonBestMove;
+        private System.Windows.Forms.CheckBox checkBoxAutoPlay;
+        private System.Windows.Forms.Button buttonEngineMove;
+        private System.Windows.Forms.Button buttonRotate;
     }
 }
 

@@ -143,6 +143,25 @@ namespace Baqhchal
             foreach(Move m in temp) moveHistory.Push(m);
         }
 
+        public static Baqhchal grabRotation(Baqhchal b, int rotationIndex)
+        {
+            Baqhchal ret = new Baqhchal(b);
+
+            for(int rot = 0; rot < rotationIndex; rot++)
+            {
+                for (int i = 0; i < b.tableSize; i++)
+                {
+                    for (int j = 0; j < b.tableSize; j++)
+                    {
+                        ret.board[i, j] = b.board[b.tableSize - j - 1, i];
+                    }
+                }
+            }
+          
+
+            return ret;
+        }
+
         public bool IsMoveLegal(Move move)
         {
             //throw new NotImplementedException();

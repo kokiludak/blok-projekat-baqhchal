@@ -58,6 +58,8 @@ namespace Baqhchal
             Pen red = new Pen(Color.Red);
             Pen blue = new Pen(Color.Blue);
             Pen orange = new Pen(Color.Orange);
+            Pen endMove = new Pen(Color.FromArgb(5, 227, 64));
+
             SolidBrush tiger = new SolidBrush(Color.FromArgb(212, 173, 2));
             SolidBrush sheep = new SolidBrush(Color.FromArgb(211, 228, 235));
 
@@ -119,7 +121,7 @@ namespace Baqhchal
                 foreach(Move move in legalMoves)
                 {
                     g.DrawEllipse(blue, move.starty * cellSize + margina - cellSize / 2, move.startx * cellSize + margina - cellSize / 2, cellSize, cellSize);
-                    //g.DrawEllipse(blue, move.endx, move.endy, cellSize, cellSize)
+                    g.DrawEllipse(endMove, move.endy * cellSize + margina - cellSize / 2, move.endx * cellSize + margina - cellSize / 2, cellSize, cellSize);
                 }
             }
 
@@ -211,6 +213,19 @@ namespace Baqhchal
             Invalidate();
         }
 
+        private void buttonEngineMove_Click(object sender, EventArgs e)
+        {
+            EngineMove();
+            Invalidate();
+        }
+
+        private void buttonRotate_Click(object sender, EventArgs e)
+        {
+            tabla = Baqhchal.grabRotation(tabla, 1);
+
+            Invalidate();
+        }
+
         private void PerformMove(int xr, int yr)
         {
             x2 = xr;
@@ -227,7 +242,9 @@ namespace Baqhchal
                 Console.WriteLine("selected move is legal, piece type: " + tabla.board[myMove.startx, myMove.starty]);
                 tabla.MakeMove(myMove);
                 curSheepTurn = !curSheepTurn;
-                EngineMove();
+
+
+                if(checkBoxAutoPlay.Checked) EngineMove();
             }
             else
             {

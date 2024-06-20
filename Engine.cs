@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,37 +16,33 @@ namespace Baqhchal
      */
     //
 
-    public class Node
-    {
-        public List<Node> Children;
-        public int data;
-
-        public Node(List<Node> children, int data)
-        {
-            Children = children;
-            this.data = data;
-        }
-    }
     public class Engine
     {
         public int depth;
         Move bestMove = null; //ne mora null al aj
         int bestEval = 0;
         bool foundMove = false;
-
+        int evaluatedPositions;
         Baqhchal baqhchal;
         Baqhchal mockBoard;
+
+        Dictionary<Baqhchal, int> transpositionTable;
         public Engine(int depth, Baqhchal baqhchal)
         {
             this.depth = depth;
             this.baqhchal = baqhchal;
+            transpositionTable = new Dictionary<Baqhchal, int>();
         }
 
 
         public Move GenerateBestMove(bool sheepTurn)
         {
+            Stopwatch watch = new Stopwatch();
+            watch.Start();
             mockBoard = new Baqhchal(baqhchal);
-            
+
+            evaluatedPositions = 0;
+
             int curEval = Search(depth, sheepTurn);
 
             if(bestMove == null)
@@ -53,13 +50,23 @@ namespace Baqhchal
                 throw new Exception("no move found");
             }
 
+            watch.Stop();
             Console.WriteLine("BEST MOVE: " +  bestMove);
             Console.WriteLine("best eval: " + bestEval);
+            Console.WriteLine("evaluated positions: " + evaluatedPositions);
+            Console.WriteLine("Time elapsed: " + watch.ElapsedMilliseconds + "ms");
             return bestMove;
         }
 
         public int Search(int depth_remaining, bool sheepTurn, int depth = 0, int alpha = Int32.MinValue, int beta = Int32.MaxValue)
         {
+
+            if (transpositionTable.ContainsKey(mockBoard))
+            {
+                return transpositionTable[mockBoard];
+            }
+
+            evaluatedPositions++;
             if(mockBoard.GameState() != gameState.Active || depth_remaining == 0)
             {
                
@@ -77,7 +84,6 @@ namespace Baqhchal
                     mockBoard.MakeMove(move);
                     int childValue = Search(depth_remaining - 1, false, depth + 1, alpha, beta);
 
-                    //Console.WriteLine("Move: " + move + " value: " + childValue + " depth: " + depth);
 
                     
 
@@ -88,12 +94,12 @@ namespace Baqhchal
                     }
 
 
-                    Console.WriteLine("before set num sheep " + mockBoard.capturedSheep);
+                  
                     curBestEval = Math.Max(curBestEval, childValue);
                     alpha = Math.Max(alpha, childValue);
                     mockBoard = new Baqhchal(prev);
 
-                    Console.WriteLine("after sheep " + mockBoard.capturedSheep);
+                    
 
 
                     if (beta <= alpha)
@@ -102,8 +108,14 @@ namespace Baqhchal
                     }
 
                 }
-                //Console.WriteLine("sheep return value: " + curBestEval);
-                return curBestEval;
+                if (!transpositionTable.ContainsKey(mockBoard))
+                {
+                    transpositionTable.Add(mockBoard, curBestEval);
+                    transpositionTable.Add(Baqhchal.grabRotation(mockBoard, 1), curBestEval);
+                    transpositionTable.Add(Baqhchal.grabRotation(mockBoard, 2), curBestEval);
+                    transpositionTable.Add(Baqhchal.grabRotation(mockBoard, 3), curBestEval);
+                }
+                    return curBestEval;
             }
             else
             {
@@ -133,6 +145,13 @@ namespace Baqhchal
                     {
                         break;
                     }
+                }
+                if (!transpositionTable.ContainsKey(mockBoard))
+                {
+                    transpositionTable.Add(mockBoard, curBestEval);
+                    transpositionTable.Add(Baqhchal.grabRotation(mockBoard, 1), curBestEval);
+                    transpositionTable.Add(Baqhchal.grabRotation(mockBoard, 2), curBestEval);
+                    transpositionTable.Add(Baqhchal.grabRotation(mockBoard, 3), curBestEval);
                 }
                 return curBestEval;
             }
