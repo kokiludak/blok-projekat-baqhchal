@@ -134,7 +134,7 @@ namespace Baqhchal
             moveHistory = new Stack<Move>();
 
             capturedSheep = copy.capturedSheep;
-            
+            numSheep = copy.numSheep;
 
 
             foreach(piece[,] board in boardStates)
@@ -485,6 +485,21 @@ namespace Baqhchal
         public override int GetHashCode()
         {
             return numSheep + capturedSheep * 17 + board.GetHashCode() * 17 * 17;
+        }
+
+        public override string ToString()
+        {
+            string ans = "---------------------\n";
+            ans += capturedSheep + " " + numSheep + '\n';
+            for(int i = 0; i < tableSize; i++)
+            {
+                for(int j = 0; j < tableSize; j++)
+                {
+                    ans += board[i, j] == piece.Empty ? "0" : (board[i, j] == piece.Tiger ? "1" : "2");
+                }
+                ans += "\n";
+            }
+            return ans;
         }
     }
 }

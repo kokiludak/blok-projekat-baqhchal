@@ -40,6 +40,7 @@
             this.checkBoxAutoPlay = new System.Windows.Forms.CheckBox();
             this.buttonEngineMove = new System.Windows.Forms.Button();
             this.buttonRotate = new System.Windows.Forms.Button();
+            this.buttonPrintBoard = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // playerIsSheep
@@ -56,7 +57,7 @@
             // 
             // buttonNewGame
             // 
-            this.buttonNewGame.Location = new System.Drawing.Point(692, 101);
+            this.buttonNewGame.Location = new System.Drawing.Point(699, 61);
             this.buttonNewGame.Name = "buttonNewGame";
             this.buttonNewGame.Size = new System.Drawing.Size(75, 23);
             this.buttonNewGame.TabIndex = 1;
@@ -164,11 +165,23 @@
             this.buttonRotate.UseVisualStyleBackColor = true;
             this.buttonRotate.Click += new System.EventHandler(this.buttonRotate_Click);
             // 
+            // buttonPrintBoard
+            // 
+            this.buttonPrintBoard.Location = new System.Drawing.Point(699, 102);
+            this.buttonPrintBoard.Name = "buttonPrintBoard";
+            this.buttonPrintBoard.Size = new System.Drawing.Size(75, 23);
+            this.buttonPrintBoard.TabIndex = 12;
+            this.buttonPrintBoard.Text = "Print Board";
+            this.buttonPrintBoard.UseCompatibleTextRendering = true;
+            this.buttonPrintBoard.UseVisualStyleBackColor = true;
+            this.buttonPrintBoard.Click += new System.EventHandler(this.buttonPrintBoard_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 561);
+            this.Controls.Add(this.buttonPrintBoard);
             this.Controls.Add(this.buttonRotate);
             this.Controls.Add(this.buttonEngineMove);
             this.Controls.Add(this.checkBoxAutoPlay);
@@ -207,6 +220,7 @@
         private System.Windows.Forms.CheckBox checkBoxAutoPlay;
         private System.Windows.Forms.Button buttonEngineMove;
         private System.Windows.Forms.Button buttonRotate;
+        private System.Windows.Forms.Button buttonPrintBoard;
     }
 }
 

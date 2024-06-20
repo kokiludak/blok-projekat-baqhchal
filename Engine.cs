@@ -63,7 +63,9 @@ namespace Baqhchal
             //if(mockBoard.moveHistory.Count != 0) Console.WriteLine(mockBoard.moveHistory.Peek());
             if (transpositionTable.ContainsKey((mockBoard, sheepTurn)))
             {
-               Console.WriteLine("jupi " + evaluatedPositions );
+               Console.WriteLine("jupi");
+               Console.Write(mockBoard);
+               Console.WriteLine("eval: " + transpositionTable[(mockBoard, sheepTurn)] + " at depth: " + depth);
                //return transpositionTable[(mockBoard, sheepTurn)];
             }
 
@@ -112,9 +114,9 @@ namespace Baqhchal
                 if (!transpositionTable.ContainsKey((mockBoard, sheepTurn)))
                 {
                     transpositionTable.Add((mockBoard, sheepTurn), curBestEval);
-                    //transpositionTable.Add((Baqhchal.grabRotation(mockBoard, 1), sheepTurn), curBestEval);
-                    //transpositionTable.Add((Baqhchal.grabRotation(mockBoard, 2), sheepTurn), curBestEval);
-                    //transpositionTable.Add((Baqhchal.grabRotation(mockBoard, 3), sheepTurn), curBestEval);
+                    transpositionTable.Add((Baqhchal.grabRotation(mockBoard, 1), sheepTurn), curBestEval);
+                    transpositionTable.Add((Baqhchal.grabRotation(mockBoard, 2), sheepTurn), curBestEval);
+                    transpositionTable.Add((Baqhchal.grabRotation(mockBoard, 3), sheepTurn), curBestEval);
                 }
                
 
@@ -154,9 +156,9 @@ namespace Baqhchal
                 if (!transpositionTable.ContainsKey((mockBoard, sheepTurn)))
                 {
                     transpositionTable.Add((mockBoard, sheepTurn), curBestEval);
-                    //transpositionTable.Add((Baqhchal.grabRotation(mockBoard, 1), sheepTurn), curBestEval);
-                    //transpositionTable.Add((Baqhchal.grabRotation(mockBoard, 2), sheepTurn), curBestEval);
-                    //transpositionTable.Add((Baqhchal.grabRotation(mockBoard, 3), sheepTurn), curBestEval);
+                    transpositionTable.Add((Baqhchal.grabRotation(mockBoard, 1), sheepTurn), curBestEval);
+                    transpositionTable.Add((Baqhchal.grabRotation(mockBoard, 2), sheepTurn), curBestEval);
+                    transpositionTable.Add((Baqhchal.grabRotation(mockBoard, 3), sheepTurn), curBestEval);
                 }
                 return curBestEval;
             }

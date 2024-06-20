@@ -226,6 +226,12 @@ namespace Baqhchal
             Invalidate();
         }
 
+        private void buttonPrintBoard_Click(object sender, EventArgs e)
+        {
+            Console.WriteLine(tabla.ToString());
+
+        }
+
         private void PerformMove(int xr, int yr)
         {
             x2 = xr;
