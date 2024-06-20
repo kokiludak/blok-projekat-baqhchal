@@ -355,6 +355,16 @@ namespace Baqhchal
             }
         }
 
+        public int CapturedTigers()
+        {
+            return 0;
+        }
+
+        public int SheepOnEdge()
+        {
+            return 0;
+        }
+
         public Move undoMove()
         {
             if (moveHistory.Count == 0) return null;

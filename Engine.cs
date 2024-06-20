@@ -64,7 +64,7 @@ namespace Baqhchal
             if (transpositionTable.ContainsKey((mockBoard, sheepTurn)))
             {
                Console.WriteLine("jupi " + evaluatedPositions );
-               return transpositionTable[(mockBoard, sheepTurn)];
+               //return transpositionTable[(mockBoard, sheepTurn)];
             }
 
             evaluatedPositions++;
@@ -112,9 +112,9 @@ namespace Baqhchal
                 if (!transpositionTable.ContainsKey((mockBoard, sheepTurn)))
                 {
                     transpositionTable.Add((mockBoard, sheepTurn), curBestEval);
-                    transpositionTable.Add((Baqhchal.grabRotation(mockBoard, 1), sheepTurn), curBestEval);
-                    transpositionTable.Add((Baqhchal.grabRotation(mockBoard, 2), sheepTurn), curBestEval);
-                    transpositionTable.Add((Baqhchal.grabRotation(mockBoard, 3), sheepTurn), curBestEval);
+                    //transpositionTable.Add((Baqhchal.grabRotation(mockBoard, 1), sheepTurn), curBestEval);
+                    //transpositionTable.Add((Baqhchal.grabRotation(mockBoard, 2), sheepTurn), curBestEval);
+                    //transpositionTable.Add((Baqhchal.grabRotation(mockBoard, 3), sheepTurn), curBestEval);
                 }
                
 
@@ -154,9 +154,9 @@ namespace Baqhchal
                 if (!transpositionTable.ContainsKey((mockBoard, sheepTurn)))
                 {
                     transpositionTable.Add((mockBoard, sheepTurn), curBestEval);
-                    transpositionTable.Add((Baqhchal.grabRotation(mockBoard, 1), sheepTurn), curBestEval);
-                    transpositionTable.Add((Baqhchal.grabRotation(mockBoard, 2), sheepTurn), curBestEval);
-                    transpositionTable.Add((Baqhchal.grabRotation(mockBoard, 3), sheepTurn), curBestEval);
+                    //transpositionTable.Add((Baqhchal.grabRotation(mockBoard, 1), sheepTurn), curBestEval);
+                    //transpositionTable.Add((Baqhchal.grabRotation(mockBoard, 2), sheepTurn), curBestEval);
+                    //transpositionTable.Add((Baqhchal.grabRotation(mockBoard, 3), sheepTurn), curBestEval);
                 }
                 return curBestEval;
             }
@@ -171,6 +171,9 @@ namespace Baqhchal
             if (mockBoard.GameState() == gameState.TigerWon) return int.MinValue;
 
             //Console.WriteLine("eval " + -mockBoard.capturedSheep);
+
+            //broj na ivici & broj uhvacenih
+
 
             return -mockBoard.capturedSheep;
         }
